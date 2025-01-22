@@ -1,0 +1,73 @@
+/* Styles généraux pour le header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+header h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: whitesmoke; /* Aboud Distribution en blanc */
+}
+
+header nav {
+    display: flex;
+    gap: 15px;
+}
+
+header nav a {
+    color: whitesmoke;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-size: 24px; /* Agrandir le texte */
+}
+
+header nav a:hover {
+    background-color: #555;
+}
+
+/* Styles pour la barre de recherche */
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.search-bar input[type="search"] {
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    outline: none;
+    border-radius: 5px;
+    flex-grow: 1;
+}
+
+.search-bar input[type="search"]::placeholder {
+    color: #aaa;
+}
+
+.search-bar button {
+    padding: 8px 15px;
+    font-size: 16px;
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: #004999;
+}

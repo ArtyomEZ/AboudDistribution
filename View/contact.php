@@ -10,6 +10,7 @@ include 'header.php';
 <div class="container">
     <h1>Contactez-nous</h1>
     <form method="post" action="mail.php" class="contact-form">
+
         <label for="nom">Nom</label>
         <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
 
@@ -29,4 +30,7 @@ include 'header.php';
     </form>
 </div>
 </body>
+
+<?php
+include 'footer.php';
 

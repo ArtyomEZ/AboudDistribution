@@ -1,5 +1,5 @@
 <header>
-    <link rel="stylesheet" href="css/Accueil.css">
+    <link rel="stylesheet" href="css/header.css">
     <div>
         <h1>Aboud Distribution</h1>
     </div>
@@ -9,7 +9,7 @@
         <a href="contact.php">Contact</a>
     </nav>
     <div class="search-bar">
-        <input type="text" placeholder="Rechercher une pièce...">
+        <input type="search" placeholder="Rechercher une pièce...">
         <button>Rechercher</button>
     </div>
 </header>
