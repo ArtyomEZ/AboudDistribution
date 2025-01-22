@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pièces Auto - Vente en ligne</title>
     <link type="text/css" rel="stylesheet" href="css/Accueil.css">
+    <link type="text/css" rel="stylesheet" href="css/header.css">
 </head>
-<body>
+<body class="home-page">
+
 <?php
 include ('header.php');
 ?>
@@ -15,9 +17,10 @@ include ('header.php');
     <div class="products">
     </div>
 </div>
-</body>
+
 
 <?php
 include ('footer.php');
 ?>
+</body>
 </html>

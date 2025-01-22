@@ -1,144 +1,68 @@
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f9fa;
-    color: #333;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 15px;
-}
-
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 2em;
-    color: #007bff;
-    font-weight: bold;
-}
-
-.product-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
-}
-
-.product {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    background: #fff;
-    border: 2px solid #fdd835; /* Jaune pour bordures */
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-}
-
-.product-details {
-    flex: 1;
-    margin-right: 20px;
-    text-align: left; /* Texte bien aligné à gauche */
-}
-
-.product-details h3 {
-    margin-bottom: 15px;
-    font-size: 1.5em;
-    color: #ff5722; /* Rouge pour les titres */
-    font-weight: bold;
-}
-
-.product-details p {
-    color: #555;
-    font-size: 1.2em;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.product-details button {
-    background-color: #007bff; /* Bleu pour le bouton */
-    color: #fff;
-    border: none;
-    padding: 12px 20px;
-    font-size: 1em;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-weight: bold;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
-}
-
-.product-details button:hover {
-    background-color: #0056b3;
-}
-
-.product img {
-    max-width: 200px;
-    height: auto;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 2px solid #007bff; /* Bleu pour bordure d'image */
-}
-.container {
+.container1 {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    text-align: center;
+}
+
+.container h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #343a40;
 }
 
 .dropdown-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: flex; /* Positionnement côte à côte */
+    justify-content: center; /* Aligne les boutons au centre */
+    gap: 20px; /* Ajoute de l'espace entre les boutons */
 }
 
 .dropdown {
     position: relative;
-    display: inline-block;
+    width: 200px; /* Largeur fixe pour uniformiser les boutons */
 }
 
 .dropdown-btn {
-    background-color: #0066cc;
+    width: 100%; /* Le bouton occupe la largeur complète de son conteneur */
+    background-color: #007bff;
     color: white;
-    padding: 10px 20px;
     border: none;
+    padding: 15px 20px;
+    font-size: 1rem;
     border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
 }
 
 .dropdown-btn:hover {
-    background-color: #004999;
+    background-color: #0056b3;
+    transform: translateY(-3px);
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: white;
-    min-width: 200px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    top: 100%; /* Menu juste en dessous du bouton */
+    left: 0;
+    background-color: #f9f9f9;
+    min-width: 100%;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 5px;
     overflow: hidden;
 }
 
 .dropdown-content a {
-    color: #333;
-    padding: 10px 15px;
+    color: #343a40;
+    padding: 12px 16px;
     text-decoration: none;
     display: block;
-    font-size: 14px;
     transition: background-color 0.3s ease;
 }
 
 .dropdown-content a:hover {
     background-color: #f1f1f1;
-    color: #0066cc;
 }
 
 .dropdown:hover .dropdown-content {

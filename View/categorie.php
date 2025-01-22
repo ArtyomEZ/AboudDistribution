@@ -1,5 +1,6 @@
-<link rel="stylesheet" href="css/categorie.css">
 
+
+<link rel="stylesheet" href="css/categorie.css">
 <div class="container">
     <h2>Nos Catégories de Produits</h2>
     <nav class="dropdown-menu">

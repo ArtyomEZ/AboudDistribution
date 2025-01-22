@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nos Produits - Boutique Automobile</title>
-    <link rel="stylesheet" href="css/produits.css">
-</head>
-<body>
-<?php
 
+<?php
+include('header.php');
 use Model\DAO\ProduitsDAO;
 
-include('header.php');
+
 include_once('../Model/DAO/ProduitsDAO.php');
 include_once('../Model/BO/ProduitBO.php');
 require_once('../Model/BDDManager.php');
@@ -31,9 +23,20 @@ try {
 }
 
 
-include 'categorie.php';
 ?>
 
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Produits - Boutique Automobile</title>
+    <link rel="stylesheet" href="css/produits.css">
+
+  
+</head>
+<body>
 
 
 <div class="container">
