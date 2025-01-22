@@ -5,49 +5,35 @@ namespace Model\DAO;
 use Model\BO\ProduitBO;
 use PDO;
 
-class ProduitsDAO
+class ProduitDAO
 {
-
     private $bdd;
-    private PDO $pdo;
 
-    public function __construct(\PDO $pdo) {
-        $this->pdo = $pdo;
+    public function __construct(\PDO $bdd) {
+        $this->bdd = $bdd;
     }
 
     public function getAllProduits(): array {
         try {
             $query = "SELECT * FROM produit";
-            $stmt = $this->pdo->prepare($query);
+            $stmt = $this->bdd->prepare($query);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $produits = [];
-            foreach ($result as $row) {
-                $produits[] = new ProduitBO(
-                    $row['id_prod'],
-                    $row['nom_prod'],
-                    $row['desc_prod'],
-                    $row['mar_prod'],
-                    $row['prix_prod'],
-                    $row['img_prod'],
-                );
-            }
+            $produits = 0;
 
             return $produits;
         } catch (\Exception $e) {
             echo "Erreur lors de la récupération des produits : " . $e->getMessage();
-            return [];
+            return 0;
         }
     }
-
-
-    public function create(ProduitBO $produit): bool {
+    public function createProduit(ProduitBO $produit): bool {
         try {
-            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, mar_prod, prix_prod, img_prod) 
+            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marque_prod, prix_prod, image_prod) 
                   VALUES (?, ?, ?, ?, ?, ?)";
             // Préparation de la requête
-            $stmt = $this->pdo->prepare($query);
+            $stmt = $this->bdd->prepare($query);
 
             // Exécution de la requête avec les données du produit
             $res = $stmt->execute([
@@ -56,7 +42,7 @@ class ProduitsDAO
                 $produit->getDescProd(),
                 $produit->getMarProd(),
                 $produit->getPrixProd(),
-                $produit->getImgProd(),
+                $produit->getImageProd()
             ]);
 
             return $res;
@@ -66,8 +52,7 @@ class ProduitsDAO
         }
     }
 
-
-    public function updateProduit(ProduitBO $entity) {
+   /* public function updateProduit(ProduitBO $entity) {
         $query = "UPDATE produit 
               SET nom_prod = ?, desc_prod = ?, mar_prod = ?, prix_prod = ? 
               WHERE id_prod = ?"; // Utilisation de ? pour les paramètres
@@ -77,6 +62,7 @@ class ProduitsDAO
 
         // Exécution de la requête avec les données mises à jour du produit
         $res = $stmt->execute([
+            $entity->getIdProd(),
             $entity->getNomProd(),
             $entity->getDescProd(),
             $entity->getMarProd(),
@@ -88,8 +74,7 @@ class ProduitsDAO
         return $res ? $entity : false;
     }
 
-
-
+*/
     public function deleteProduit($id_prod) {
         $query = "DELETE FROM produit WHERE id_prod = ?"; // Utilisation de ? pour le paramètre
 

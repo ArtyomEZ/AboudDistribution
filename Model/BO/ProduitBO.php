@@ -6,28 +6,28 @@ class ProduitBO
 {
 
     private int $id_prod;
-    private string $nom_prod;
-    private string $desc_prod;
-    private string $mar_prod;
+    private String $nom_prod;
+    private String $desc_prod;
+    private String $marque_prod;
     private int $prix_prod;
-    private string $img_prod;
+    private String $image_prod;
 
     /**
      * @param int $id_prod
      * @param string $nom_prod
      * @param string $desc_prod
-     * @param string $mar_prod
+     * @param string $marque_prod
      * @param int $prix_prod
-     * @param string $img_prod
+     * @param string $image_prod
      */
-    public function __construct(int $id_prod, string $nom_prod, string $desc_prod, string $mar_prod, int $prix_prod, string $img_prod)
+    public function Produit(int $id_prod, string $nom_prod, string $desc_prod, string $marque_prod, int $prix_prod, string $image_prod)
     {
         $this->id_prod = $id_prod;
         $this->nom_prod = $nom_prod;
         $this->desc_prod = $desc_prod;
-        $this->mar_prod = $mar_prod;
         $this->prix_prod = $prix_prod;
-        $this->img_prod = $img_prod;
+        $this->marque_prod = $marque_prod;
+        $this->image_prod = $image_prod;
     }
 
     public function getIdProd(): int
@@ -80,15 +80,16 @@ class ProduitBO
         $this->prix_prod = $prix_prod;
     }
 
-    public function getImgProd(): string
+    public function getMarqueProd(): string
     {
-        return $this->img_prod;
+        return $this->marque_prod;
     }
 
-    public function setImgProd(string $img_prod): void
+    public function getImageProd(): string
     {
-        $this->img_prod = $img_prod;
+        return $this->image_prod;
     }
+
 
 
 }

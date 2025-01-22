@@ -34,17 +34,68 @@ class AdminController
         exit;
     }
 
-
-    public function ajoutProduit()
+    public function ajoutProduitPage()
     {
         try {
             $this->ensureLoggedInAs('administrateur');
+
             $bdd = initialiseConnexionBDD();
 
+            include "../View/header.phop";
+            include "../View/ajoutProduit.php";
+            include  "../View/footer.php";
         } catch (\Exception $e) {
             $this->redirectWithError($e->getMessage());
         }
     }
+    public function ajoutProduitBDD()
+    {
+        try {
+            if($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $this->ensureLoggedInAs('administrateur');
+                $bdd = initialiseConnexionBDD();
+                $produitDAO = new ProduitDAO($bdd);
+
+                $nom = htmlspecialchars($_POST['nom']);
+                $desc = htmlspecialchars($_POST['desc']);
+                $prix = htmlspecialchars($_POST['prix']);
+                $image = htmlspecialchars($_POST['image']);
+                $marque = htmlspecialchars($_POST['marque']);
+
+                $produit = new Produit(0, $nom, $desc, $prix, $image, $marque);
+                $success = $produitDAO->createProduit($produit);
+
+                if($success) {
+                    header('Location: ?action=gestionProduit');
+                } else {
+                    throw new \Exception("Erreur lors de l'ajout du produit.");
+                }
+            }
+        } catch (\Exception $e) {
+            $this->redirectWithError($e->getMessage());
+        }
+    }
+
+    public function suppProduitPage()
+    {
+        try {
+            if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->ensureLoggedInAs('administrateur');
+
+            $bdd = initialiseConnexionBDD();
+
+            include "../View/header.php";
+            include "../View/suppProduit.php";
+            include "../View/footer.php";
+        }
+    } catch (\Exception $e) {
+        $this->redirectWithError($e->getMessage());}
+    }
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] ===  'ajoutProduitBDD') {
+    $controller = new AdminController();
+    $controller->ajoutProduitBDD();
 }
 
 ?>

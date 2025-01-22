@@ -39,7 +39,7 @@ class AdministrateurDAO
 
             $result = $stmt->execute([
                 $administrateur->getIdAdmin(),
-                $administrateur->getNomAdmin(),
+                $administrateur->getLoginAdmin(),
                 $administrateur->getMdpAdmin()
             ]);
 
