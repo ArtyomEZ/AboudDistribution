@@ -17,7 +17,7 @@ class ProduitDAO
         $produits = [];
 
         try {
-            $query = "SELECT id_prod, nom_prod, desc_prod, marque_prod, prix_prod, image_prod FROM produit";
+            $query = "SELECT id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod FROM produit";
             $stmt = $this->bdd->query($query);
 
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -25,9 +25,9 @@ class ProduitDAO
                     $row['id_prod'],
                     $row['nom_prod'],
                     $row['desc_prod'],
-                    $row['marque_prod'],
+                    $row['marq_prod'],
                     $row['prix_prod'],
-                    $row['image_prod'] ?? ''
+                    $row['img_prod'] ?? ''
                 );
                 $produits[] = $produit;
             }
@@ -38,7 +38,7 @@ class ProduitDAO
     }
     public function createProduit(ProduitBO $produit): bool {
         try {
-            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marque_prod, prix_prod, image_prod) 
+            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod) 
                   VALUES (?, ?, ?, ?, ?, ?)";
             // Préparation de la requête
             $stmt = $this->bdd->prepare($query);

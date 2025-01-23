@@ -8,7 +8,7 @@ class ProduitBO
     private int $id_prod;
     private String $nom_prod;
     private String $desc_prod;
-    private String $marque_prod;
+    private String $marq_prod;
     private int $prix_prod;
     private String $image_prod;
 
@@ -16,17 +16,18 @@ class ProduitBO
      * @param int $id_prod
      * @param string $nom_prod
      * @param string $desc_prod
-     * @param string $marque_prod
+     * @param string $marq_prod
      * @param int $prix_prod
      * @param string $image_prod
+     * @param String $id_typ_prod
      */
-    public function __construct(int $id_prod, string $nom_prod, string $desc_prod, string $marque_prod, int $prix_prod, string $image_prod)
+    public function __construct(int $id_prod, string $nom_prod, string $desc_prod, string $marq_prod, int $prix_prod, string $image_prod)
     {
         $this->id_prod = $id_prod;
         $this->nom_prod = $nom_prod;
         $this->desc_prod = $desc_prod;
         $this->prix_prod = $prix_prod;
-        $this->marque_prod = $marque_prod;
+        $this->marq_prod = $marq_prod;
         $this->image_prod = $image_prod;
     }
 
@@ -62,10 +63,10 @@ class ProduitBO
 
     public function getMarProd(): string
     {
-        return $this->mar_prod;
+        return $this->marq_prod;
     }
 
-    public function setMarProd(string $mar_prod): void
+    public function setMarqProd(string $mar_prod): void
     {
         $this->mar_prod = $mar_prod;
     }
