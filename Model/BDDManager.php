@@ -3,7 +3,7 @@
 function initialiseConnexionBDD() {
     $bdd = null;
     try {
-        $bdd = new PDO('mysql:host=localhost;dbname=aboudistribution;charset=utf8',
+        $bdd = new PDO('mysql:host=localhost;dbname=abouddistribution;charset=utf8',
             'root',
             ''
         );

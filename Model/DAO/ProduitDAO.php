@@ -14,19 +14,27 @@ class ProduitDAO
     }
 
     public function getAllProduits(): array {
+        $produits = [];
+
         try {
-            $query = "SELECT * FROM produit";
-            $stmt = $this->bdd->prepare($query);
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $query = "SELECT id_prod, nom_prod, desc_prod, marque_prod, prix_prod, image_prod FROM produit";
+            $stmt = $this->bdd->query($query);
 
-            $produits = 0;
-
-            return $produits;
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $produit = new ProduitBO(
+                    $row['id_prod'],
+                    $row['nom_prod'],
+                    $row['desc_prod'],
+                    $row['marque_prod'],
+                    $row['prix_prod'],
+                    $row['image_prod'] ?? ''
+                );
+                $produits[] = $produit;
+            }
         } catch (\Exception $e) {
             echo "Erreur lors de la récupération des produits : " . $e->getMessage();
-            return 0;
         }
+        return $produits;
     }
     public function createProduit(ProduitBO $produit): bool {
         try {

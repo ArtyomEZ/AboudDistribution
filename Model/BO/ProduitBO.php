@@ -20,7 +20,7 @@ class ProduitBO
      * @param int $prix_prod
      * @param string $image_prod
      */
-    public function Produit(int $id_prod, string $nom_prod, string $desc_prod, string $marque_prod, int $prix_prod, string $image_prod)
+    public function __construct(int $id_prod, string $nom_prod, string $desc_prod, string $marque_prod, int $prix_prod, string $image_prod)
     {
         $this->id_prod = $id_prod;
         $this->nom_prod = $nom_prod;
