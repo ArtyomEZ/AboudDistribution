@@ -55,9 +55,8 @@ try {
             foreach ($produits as $produit) {
             echo "Nom : " . $produit->getNomProd() . "<br>";
             echo "Description : " . $produit->getDescProd() . "<br>";
-            echo "Marque : " . $produit->getMarqueProd() . "<br>";
+            echo "Marque : " . $produit->getMarProd() . "<br>";
             echo "Prix : " . $produit->getPrixProd() . "€<br>";
-            echo "Image : <img src='" . $produit->getImageProd() . "' alt='" . $produit->getNomProd() . "'><br><br>";
             }
             } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();

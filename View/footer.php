@@ -20,9 +20,9 @@
         <!-- Liens utiles -->
         <div class="footer-links">
             <ul>
-                <li><a href="about.php">À propos</a></li>
-                <li><a href="produits.php">Produits</a></li>
-                <li><a href="contact.php">Contact</a></li>
+                <li><a href="pageApropos.php">À propos</a></li>
+                <li><a href="pageProduits.php">Produits</a></li>
+                <li><a href="pageContact.php">Contact</a></li>
             </ul>
         </div>
 

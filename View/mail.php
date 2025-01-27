@@ -49,7 +49,7 @@ try {
 
         $mail->send();
         echo 'E-mail envoyé avec succès !';
-        header('Location: Accueil.php');
+        header('Location: pageAccueil.php');
         exit();
     } else {
         echo 'Veuillez remplir tous les champs.';
