@@ -2,6 +2,8 @@
 
 namespace Model\BO;
 
+use Model\BO\TypeProduitBO;
+
 class ProduitBO
 {
 
@@ -10,7 +12,8 @@ class ProduitBO
     private String $desc_prod;
     private String $marq_prod;
     private int $prix_prod;
-    private String $image_prod;
+    private String $img_prod;
+    private TypeProduitBO $id_typ_prod;
 
     /**
      * @param int $id_prod
@@ -18,17 +21,19 @@ class ProduitBO
      * @param string $desc_prod
      * @param string $marq_prod
      * @param int $prix_prod
-     * @param string $image_prod
-     * @param String $id_typ_prod
+     * @param string $img_prod
+     * @param TypeProduitBO $id_typ_prod
      */
-    public function __construct(int $id_prod, string $nom_prod, string $desc_prod, string $marq_prod, int $prix_prod, string $image_prod)
+
+    public function __construct(int $id_prod, string $nom_prod, string $desc_prod, string $marq_prod, int $prix_prod, string $img_prod, TypeProduitBO $id_typ_prod)
     {
         $this->id_prod = $id_prod;
         $this->nom_prod = $nom_prod;
         $this->desc_prod = $desc_prod;
         $this->prix_prod = $prix_prod;
         $this->marq_prod = $marq_prod;
-        $this->image_prod = $image_prod;
+        $this->img_prod = $img_prod ?? 'pas d\'image';
+        $this->id_typ_prod = $id_typ_prod;
     }
 
     public function getIdProd(): int
@@ -66,11 +71,6 @@ class ProduitBO
         return $this->marq_prod;
     }
 
-    public function setMarqProd(string $mar_prod): void
-    {
-        $this->mar_prod = $mar_prod;
-    }
-
     public function getPrixProd(): int
     {
         return $this->prix_prod;
@@ -81,15 +81,27 @@ class ProduitBO
         $this->prix_prod = $prix_prod;
     }
 
-    public function getMarqueProd(): string
+    public function getImgProd(): string
     {
-        return $this->marque_prod;
+        return $this->img_prod;
     }
 
-    public function getImageProd(): string
+    public function setImgProd(string $img_prod): void
     {
-        return $this->image_prod;
+        $this->img_prod = $img_prod;
     }
+
+    public function getMarqProd(): string
+    {
+        return $this->marq_prod;
+    }
+
+    public function getIdTypProd(): TypeProduitBO
+    {
+        return $this->id_typ_prod;
+    }
+
+
 
 
 

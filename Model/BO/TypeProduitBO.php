@@ -7,7 +7,7 @@ class TypeProduitBO
     private int $id_typ_prod;
     private String $lib_typ_prod;
 
-    public function typeProduit($id_typ_prod, $lib_typ_prod) {
+    public function __construct($id_typ_prod, $lib_typ_prod) {
         $this->id_typ_prod = $id_typ_prod;
         $this->lib_typ_prod = $lib_typ_prod;
     }

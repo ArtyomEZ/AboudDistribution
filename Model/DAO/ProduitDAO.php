@@ -3,7 +3,9 @@
 namespace Model\DAO;
 
 use Model\BO\ProduitBO;
+use Model\BO\TypeProduitBO;
 use PDO;
+use function Sodium\add;
 
 class ProduitDAO
 {
@@ -13,29 +15,41 @@ class ProduitDAO
         $this->bdd = $bdd;
     }
 
-    public function getAllProduits(): array {
+    public function getAllProduits(): array
+    {
+        $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
+                     p.img_prod, tp.id_typ_prod, tp.lib_typ_prod
+              FROM Produit p
+              INNER JOIN TYPE_PRODUIT tp ON p.id_typ_prod = tp.id_typ_prod";
+
+        $stmt = $this->bdd->prepare($query);
+        $stmt->execute();
+
         $produits = [];
+        while ($row = $stmt->fetch()) {
+            // Construire l'objet TypeProduitBO
+            $typeProduit = new TypeProduitBO(
+                $row['id_typ_prod'],
+                $row['lib_typ_prod']
+            );
 
-        try {
-            $query = "SELECT id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod FROM produit";
-            $stmt = $this->bdd->query($query);
+            // Construire l'objet ProduitBO avec le TypeProduitBO associé
+            $produit = new ProduitBO(
+                $row['id_prod'],
+                $row['nom_prod'],
+                $row['desc_prod'],
+                $row['marq_prod'],
+                $row['prix_prod'],
+                $row['img_prod'] ?? 'pas d\'image',
+                $typeProduit // Associer l'objet TypeProduitBO
+            );
 
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $produit = new ProduitBO(
-                    $row['id_prod'],
-                    $row['nom_prod'],
-                    $row['desc_prod'],
-                    $row['marq_prod'],
-                    $row['prix_prod'],
-                    $row['img_prod'] ?? ''
-                );
-                $produits[] = $produit;
-            }
-        } catch (\Exception $e) {
-            echo "Erreur lors de la récupération des produits : " . $e->getMessage();
+            $produits[] = $produit;
         }
+
         return $produits;
     }
+
     public function createProduit(ProduitBO $produit): bool {
         try {
             $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod) 
@@ -50,7 +64,7 @@ class ProduitDAO
                 $produit->getDescProd(),
                 $produit->getMarProd(),
                 $produit->getPrixProd(),
-                $produit->getImageProd()
+                $produit->getImgProd()
             ]);
 
             return $res;
@@ -60,7 +74,7 @@ class ProduitDAO
         }
     }
 
-   /* public function updateProduit(ProduitBO $entity) {
+    public function updateProduit(ProduitBO $entity) {
         $query = "UPDATE produit 
               SET nom_prod = ?, desc_prod = ?, mar_prod = ?, prix_prod = ? 
               WHERE id_prod = ?"; // Utilisation de ? pour les paramètres
@@ -82,7 +96,7 @@ class ProduitDAO
         return $res ? $entity : false;
     }
 
-*/
+
     public function deleteProduit($id_prod) {
         $query = "DELETE FROM produit WHERE id_prod = ?"; // Utilisation de ? pour le paramètre
 
@@ -93,9 +107,38 @@ class ProduitDAO
         $stmt->execute([$id_prod]);
     }
 
+    public function getProduitsByType(int $id_typ_prod): array
+    {
+        $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
+                     p.img_prod, tp.id_typ_prod, tp.lib_typ_prod
+              FROM Produit p
+              INNER JOIN TYPE_PRODUIT tp ON p.id_typ_prod = tp.id_typ_prod
+              WHERE tp.id_typ_prod = ?";
 
+        $stmt = $this->bdd->prepare($query);
+        $stmt->execute([$id_typ_prod]);
 
+        $produits = [];
+        while ($row = $stmt->fetch()) {
+            $typeProduit = new TypeProduitBO(
+                $row['id_typ_prod'],
+                $row['lib_typ_prod']
+            );
 
+            $produit = new ProduitBO(
+                $row['id_prod'],
+                $row['nom_prod'],
+                $row['desc_prod'],
+                $row['marq_prod'],
+                $row['prix_prod'],
+                $row['img_prod'] ?? 'pas d\'image',
+                $typeProduit
+            );
 
+            $produits[] = $produit;
+        }
+
+        return $produits;
+    }
 
 }
