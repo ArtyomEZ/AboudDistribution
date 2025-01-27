@@ -1,30 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+
+<head>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/contact.css">
+
+</head>
+
+
+
+<body>
 <?php
 
 include 'header.php';
 
 ?>
-<body>
-
-<link rel="stylesheet" href="css/contact.css">
-
-<div class="container">
+<div class="contact-container">
     <h1>Contactez-nous</h1>
-    <form method="post" action="mail.php" class="contact-form">
+    <form method="post" action="mail.php" class="contact-form-wrapper">
+        <label for="contact-nom">Nom</label>
+        <input type="text" id="contact-nom" name="nom" placeholder="Votre nom" required>
 
-        <label for="nom">Nom</label>
-        <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+        <label for="contact-prenom">Prénom</label>
+        <input type="text" id="contact-prenom" name="prenom" placeholder="Votre prénom" required>
 
-        <label for="prenom">Prénom</label>
-        <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required>
+        <label for="contact-email">E-mail</label>
+        <input type="email" id="contact-email" name="email" placeholder="Votre adresse e-mail" required>
 
-        <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" placeholder="Votre adresse e-mail" required>
+        <label for="contact-telephone">Téléphone</label>
+        <input type="tel" id="contact-telephone" name="telephone" placeholder="Votre numéro de téléphone" required>
 
-        <label for="telephone">Téléphone</label>
-        <input type="tel" id="telephone" name="telephone" placeholder="Votre numéro de téléphone" required>
-
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="5" placeholder="Votre message ici..." required></textarea>
+        <label for="contact-message">Message</label>
+        <textarea id="contact-message" name="message" rows="5" placeholder="Votre message ici..." required></textarea>
 
         <button type="submit">Envoyer</button>
     </form>

@@ -1,75 +1,117 @@
-/* Catégories CSS */
+/* Styles globaux */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Conteneur principal */
 .container1 {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 30px auto;
     padding: 20px;
     text-align: center;
 }
 
+/* Titre principal */
 .container1 h2 {
     font-size: 2rem;
-    margin-bottom: 20px;
-    color: #007bff;
+    color: #343a40;
     font-weight: bold;
+    margin-bottom: 20px;
 }
 
-.dropdown-menu {
-    display: flex; /* Permet de positionner les éléments sur la même ligne */
-    justify-content: center; /* Centre les catégories horizontalement */
-    gap: 20px; /* Ajoute de l'espace entre les catégories */
+/* Liste des produits */
+.product-grid {
+    display: flex;
+    flex-wrap: nowrap; /* Pour un effet slider */
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 10px;
 }
 
-.dropdown {
-    position: relative;
-    width: 200px; /* Largeur uniforme pour tous les boutons */
+/* Style des produits */
+.product-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: left;
+    min-width: 250px; /* Pour garder un bon affichage */
+    flex: 0 0 auto;
+    border: 1px solid #ddd;
 }
 
-.dropdown-btn {
-    width: 100%; /* Le bouton occupe toute la largeur du conteneur */
-    background-color: #007bff; /* Bleu */
+/* Image produit */
+.product-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Nom du produit */
+.product-card h3 {
+    font-size: 1rem;
+    color: #343a40;
+    margin: 10px 0;
+}
+
+/* Référence */
+.product-card .product-ref {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Prix */
+.product-card .product-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Évaluations */
+.product-card .rating {
+    color: #ff9900;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+/* Bouton d'achat */
+.product-card .buy-btn {
+    background-color: #d32f2f;
     color: white;
     border: none;
-    padding: 15px 20px;
+    padding: 10px;
+    width: 100%;
     font-size: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
     font-weight: bold;
-    text-align: center;
-}
-
-.dropdown-btn:hover {
-    background-color: #0056b3; /* Bleu foncé au survol */
-    transform: translateY(-2px); /* Animation légère au survol */
-}
-
-.dropdown-content {
-    display: none; /* Cacher le menu déroulant par défaut */
-    position: absolute;
-    top: 100%; /* Position juste en dessous du bouton */
-    left: 0;
-    background-color: white;
-    min-width: 100%; /* Largeur identique au bouton parent */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre légère */
-    z-index: 10; /* Assure que le menu apparaît au-dessus */
     border-radius: 5px;
-    overflow: hidden;
+    cursor: pointer;
+    margin-top: 10px;
 }
 
-.dropdown-content a {
-    color: #333;
-    padding: 10px 15px;
-    text-decoration: none;
-    display: block;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+.product-card .buy-btn:hover {
+    background-color: #b71c1c;
 }
 
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-    color: #007bff; /* Bleu clair au survol */
+/* Styles pour le slider */
+.slider-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
 }
 
-.dropdown:hover .dropdown-content {
-    display: block; /* Affiche le menu déroulant au survol */
+.slider-controls button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.slider-controls button:hover {
+    background-color: #0056b3;
 }

@@ -21,7 +21,7 @@ try {
         $prenom = $_POST['prenom'];
         $message = $_POST['message'];
         $email = $_POST['email'];
-        $tel = $_POST['tel'];
+        $tel = $_POST['telephone'];
 
 
         $mail->setFrom($email, 'Formulaire de contact');
