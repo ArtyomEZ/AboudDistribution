@@ -50,7 +50,7 @@ try {
                 // Création du DAO
                 $produitDAO = new ProduitDAO($pdo);
 
-                $id_typ_prod = 1;
+                $id_typ_prod = 4;
 
                 // Appel de la méthode
                 $produits = $produitDAO->getProduitsByType($id_typ_prod);
@@ -74,18 +74,4 @@ try {
 
             ?>
 
-           <? /*// Appel de la méthode
-            $produits = $produitDAO->getAllProduits();
 
-            // Affichage des produits
-            foreach ($produits as $produit) {
-            echo "Nom : " . $produit->getNomProd() . "<br>";
-            echo "Description : " . $produit->getDescProd() . "<br>";
-            echo "Marque : " . $produit->getMarProd() . "<br>";
-            echo "Prix : " . $produit->getPrixProd() . "€<br>";
-                echo "Image : <img src='" . $produit->getImgProd() . "' alt='" . $produit->getNomProd() . "'><br><br>";
-            }
-            } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
-            }
-            ?> */?>
