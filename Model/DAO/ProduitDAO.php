@@ -52,19 +52,19 @@ class ProduitDAO
 
     public function createProduit(ProduitBO $produit): bool {
         try {
-            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod) 
+            $query = "INSERT INTO produit (nom_prod, desc_prod, marq_prod, prix_prod, img_prod, id_typ_prod) 
                   VALUES (?, ?, ?, ?, ?, ?)";
             // Préparation de la requête
             $stmt = $this->bdd->prepare($query);
 
             // Exécution de la requête avec les données du produit
             $res = $stmt->execute([
-                $produit->getIdProd(),
                 $produit->getNomProd(),
                 $produit->getDescProd(),
                 $produit->getMarProd(),
                 $produit->getPrixProd(),
-                $produit->getImgProd()
+                $produit->getImgProd(),
+                $produit->getIdTypProd()->getIdTypProd()
             ]);
 
             return $res;

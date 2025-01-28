@@ -41,7 +41,7 @@ class LoginController
         $_SESSION['mdp'] = $user->getAdminMdp();
         $_SESSION['role'] = $role;
 
-        header("Location: ../Controller/AdminController.php?action=dashboard");
+        header("Location: ../Controller/ProduitController.php?action=dashboard");
     }
 
     private function redirectWithError($message)

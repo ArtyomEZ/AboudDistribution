@@ -3,6 +3,7 @@
 namespace Model\DAO;
 
 use Model\BO\TypeProduitBO;
+use PDO;
 
 class TypeProduitDAO
 {
@@ -63,5 +64,42 @@ class TypeProduitDAO
             echo "Erreur lors de la suppression du type du produit : " . $e->getMessage();
             return false;
         }
+    }
+
+    public function getAllTypeProduits(): array
+    {
+        $query = "SELECT id_typ_prod, lib_typ_prod FROM TYPE_PRODUIT";
+        $stmt = $this->bdd->prepare($query);
+        $stmt->execute();
+
+        $typesProduits = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $typeProduit = new TypeProduitBO(
+                $row['id_typ_prod'],
+                $row['lib_typ_prod']
+            );
+
+            $typesProduits[] = $typeProduit;
+        }
+
+        return $typesProduits;
+    }
+
+    public function getTypeProduitById(int $id_typ_prod): ?TypeProduitBO
+    {
+        $query = "SELECT id_typ_prod, lib_typ_prod FROM TYPE_PRODUIT WHERE id_typ_prod = ?";
+        $stmt = $this->bdd->prepare($query);
+        $stmt->execute([$id_typ_prod]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            return new TypeProduitBO(
+                $row['id_typ_prod'],
+                $row['lib_typ_prod']
+            );
+        }
+
+        return null;
     }
 }
