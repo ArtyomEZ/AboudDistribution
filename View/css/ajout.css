@@ -1,0 +1,77 @@
+/* Styles globaux */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+/* Conteneur principal */
+.container {
+    max-width: 600px; /* Réduit la taille du conteneur */
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Titre principal */
+.container h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    color: #343a40;
+}
+
+/* Formulaire de contact */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Ajoute un espacement entre les éléments */
+}
+
+/* Labels */
+.contact-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #343a40;
+}
+
+/* Champs de formulaire */
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+    padding: 8px; /* Réduit le padding */
+    margin-bottom: 15px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Prend toute la largeur disponible */
+    max-width: 100%; /* Pour éviter que ça dépasse */
+    box-sizing: border-box; /* Inclut les bordures dans la largeur */
+}
+
+/* Modifie la taille du champ texte (textarea) */
+.contact-form textarea {
+    resize: vertical; /* Permet de redimensionner verticalement */
+    height: 100px; /* Limite la hauteur du textarea */
+}
+
+/* Bouton */
+.contact-form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Bouton au survol */
+.contact-form button:hover {
+    background-color: #0056b3;
+}

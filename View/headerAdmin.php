@@ -6,14 +6,13 @@
 
     <div class="header-top">
         <h1>Aboud Distribution</h1>
-        <a href="pageConnexion.php"> <img src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png" height="100px" align="right"></a>
     </div>
     <nav class="header-navigation">
         <a href="pageAccueil.php">Accueil</a>
         <a href="pageProduits.php">Nos Produits</a>
         <a href="pageContact.php">Contact</a>
+        <a href="pageGestionProduits.php">Gestions Articles</a>
     </nav>
-
     <div class="search-bar">
         <input type="search" placeholder="Rechercher une pièce...">
         <button>Rechercher</button>
@@ -47,7 +46,7 @@
             </div>
         </div>
     </nav>
-
 </header>
 
 
+<?php
