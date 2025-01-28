@@ -3,68 +3,62 @@
 namespace Model\DAO;
 
 use Model\BO\ProduitBO;
-use Model\BO\TypeProduitBO;
+use Model\BO\TypeProduitBO; // Import de TypeProduitBO
 use PDO;
-use function Sodium\add;
+
+require_once('../Model/BO/TypeProduitBO.php'); // Inclure TypeProduitBO si nécessaire
 
 class ProduitDAO
 {
     private $bdd;
 
-    public function __construct(\PDO $bdd) {
+    public function __construct(PDO $bdd) {
         $this->bdd = $bdd;
     }
 
-    public function getAllProduits(): array
-    {
-        $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
-                     p.img_prod, tp.id_typ_prod, tp.lib_typ_prod
-              FROM Produit p
-              INNER JOIN TYPE_PRODUIT tp ON p.id_typ_prod = tp.id_typ_prod";
-
-        $stmt = $this->bdd->prepare($query);
-        $stmt->execute();
-
+    public function getAllProduits(): array {
         $produits = [];
-        while ($row = $stmt->fetch()) {
-            // Construire l'objet TypeProduitBO
-            $typeProduit = new TypeProduitBO(
-                $row['id_typ_prod'],
-                $row['lib_typ_prod']
-            );
 
-            // Construire l'objet ProduitBO avec le TypeProduitBO associé
-            $produit = new ProduitBO(
-                $row['id_prod'],
-                $row['nom_prod'],
-                $row['desc_prod'],
-                $row['marq_prod'],
-                $row['prix_prod'],
-                $row['img_prod'] ?? 'pas d\'image',
-                $typeProduit // Associer l'objet TypeProduitBO
-            );
+        try {
+            $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
+                         p.img_prod, p.id_typ_prod, t.lib_typ_prod 
+                  FROM produit p
+                  JOIN type_produit t ON p.id_typ_prod = t.id_typ_prod"; // 🔥 Correction ici
 
-            $produits[] = $produit;
+            $stmt = $this->bdd->query($query);
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $produit = new ProduitBO(
+                    $row['id_prod'],
+                    $row['nom_prod'],
+                    $row['desc_prod'],
+                    $row['marq_prod'],
+                    $row['prix_prod'],
+                    $row['img_prod'] ?? '',
+                    new TypeProduitBO($row['id_typ_prod'], $row['lib_typ_prod']) // 🔥 Correction ici
+                );
+                $produits[] = $produit;
+            }
+        } catch (\Exception $e) {
+            echo "Erreur lors de la récupération des produits : " . $e->getMessage();
         }
-
         return $produits;
     }
 
     public function createProduit(ProduitBO $produit): bool {
         try {
-            $query = "INSERT INTO produit (nom_prod, desc_prod, marq_prod, prix_prod, img_prod, id_typ_prod) 
-                  VALUES (?, ?, ?, ?, ?, ?)";
-            // Préparation de la requête
+            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod, id_typ_prod) 
+                      VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->bdd->prepare($query);
 
-            // Exécution de la requête avec les données du produit
             $res = $stmt->execute([
+                $produit->getIdProd(),
                 $produit->getNomProd(),
                 $produit->getDescProd(),
                 $produit->getMarProd(),
                 $produit->getPrixProd(),
                 $produit->getImgProd(),
-                $produit->getIdTypProd()->getIdTypProd()
+                $produit->getIdProd() // Récupération de l’ID du TypeProduitBO
             ]);
 
             return $res;
@@ -74,71 +68,13 @@ class ProduitDAO
         }
     }
 
-    public function updateProduit(ProduitBO $entity) {
-        $query = "UPDATE produit 
-              SET nom_prod = ?, desc_prod = ?, mar_prod = ?, prix_prod = ? 
-              WHERE id_prod = ?"; // Utilisation de ? pour les paramètres
-
-        // Préparation de la requête
-        $stmt = $this->bdd->prepare($query);
-
-        // Exécution de la requête avec les données mises à jour du produit
-        $res = $stmt->execute([
-            $entity->getIdProd(),
-            $entity->getNomProd(),
-            $entity->getDescProd(),
-            $entity->getMarProd(),
-            $entity->getPrixProd(),
-            $entity->getIdProd(),
-        ]);
-
-        // Retourner l'objet produit si la mise à jour a réussi
-        return $res ? $entity : false;
-    }
-
-
     public function deleteProduit($id_prod) {
-        $query = "DELETE FROM produit WHERE id_prod = ?"; // Utilisation de ? pour le paramètre
-
-        
-        $stmt = $this->bdd->prepare($query);
-
-        
-        $stmt->execute([$id_prod]);
-    }
-
-    public function getProduitsByType(int $id_typ_prod): array
-    {
-        $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
-                     p.img_prod, tp.id_typ_prod, tp.lib_typ_prod
-              FROM Produit p
-              INNER JOIN TYPE_PRODUIT tp ON p.id_typ_prod = tp.id_typ_prod
-              WHERE tp.id_typ_prod = ?";
-
-        $stmt = $this->bdd->prepare($query);
-        $stmt->execute([$id_typ_prod]);
-
-        $produits = [];
-        while ($row = $stmt->fetch()) {
-            $typeProduit = new TypeProduitBO(
-                $row['id_typ_prod'],
-                $row['lib_typ_prod']
-            );
-
-            $produit = new ProduitBO(
-                $row['id_prod'],
-                $row['nom_prod'],
-                $row['desc_prod'],
-                $row['marq_prod'],
-                $row['prix_prod'],
-                $row['img_prod'] ?? 'pas d\'image',
-                $typeProduit
-            );
-
-            $produits[] = $produit;
+        try {
+            $query = "DELETE FROM produit WHERE id_prod = ?";
+            $stmt = $this->bdd->prepare($query);
+            $stmt->execute([$id_prod]);
+        } catch (\Exception $e) {
+            echo "Erreur lors de la suppression du produit : " . $e->getMessage();
         }
-
-        return $produits;
     }
-
 }
