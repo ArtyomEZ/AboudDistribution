@@ -52,7 +52,7 @@ try {
 
         <script>
             function scrollLeft() {
-                document.querySelector(".product-grid").scrollBy({ left: 200, behavior: "smooth" });
+                document.querySelector(".product-grid").scrollBy({ left: -300, behavior: "smooth" });
             }
 
 
