@@ -72,8 +72,5 @@ try {
                 echo "Erreur lors de l'exécution de la méthode : " . $e->getMessage() . PHP_EOL;
             }
 
-
             include 'footer.php';
             ?>
-
-

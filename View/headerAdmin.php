@@ -11,7 +11,7 @@
         <a href="pageAccueil.php">Accueil</a>
         <a href="pageProduits.php">Nos Produits</a>
         <a href="pageContact.php">Contact</a>
-        <a href="pageGestionProduits.php">Gestions Articles</a>
+        <a href="pageGestionProduit.php">Gestions Articles</a>
     </nav>
     <div class="search-bar">
         <input type="search" placeholder="Rechercher une pièce...">
