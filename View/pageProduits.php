@@ -24,43 +24,55 @@ try {
 ?>
 
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nos Produits - Boutique Automobile</title>
-    <link rel="stylesheet" href="css/produits.css">
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Nos Produits - Boutique Automobile</title>
+        <link rel="stylesheet" href="css/produits.css">
+    </head>
+    <body>
 
-</head>
-<body>
+    <div class="container1">
+        <h2>Nos Produits</h2>
+        <div class="product-grid">
+            <?php foreach ($produits as $produit): ?>
+                <div class="product-card">
+                    <img src="<?= $produit->getImageProd(); ?>" alt="<?= htmlspecialchars($produit->getNomProd()); ?>">
+                    <div class="rating">⭐⭐⭐⭐⭐</div>
+                    <h3><?= htmlspecialchars($produit->getNomProd()); ?></h3>
+                    <p class="product-price"><?= htmlspecialchars($produit->getPrixProd()); ?> €</p>
+                    <div class="button-container">
+                        <button class="buy-btn">🛒 Ajouter au panier</button>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
 
-<div class="container">
-    <h2>Nos Produits</h2>
-    <div class="product-list">
-        <div class="product">
-            <?php
-            try {
-            // Connexion à la base de données
-            $pdo = new PDO('mysql:host=localhost;dbname=abouddistribution', 'root', '');
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            // Création du DAO
-            $produitDAO = new ProduitDAO($pdo);
-
-            // Appel de la méthode
-            $produits = $produitDAO->getAllProduits();
-
-            // Affichage des produits
-            foreach ($produits as $produit) {
-            echo "Nom : " . $produit->getNomProd() . "<br>";
-            echo "Description : " . $produit->getDescProd() . "<br>";
-            echo "Marque : " . $produit->getMarProd() . "<br>";
-            echo "Prix : " . $produit->getPrixProd() . "€<br>";
+        <script>
+            function scrollLeft() {
+                document.querySelector(".product-grid").scrollBy({ left: 200, behavior: "smooth" });
             }
-            } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
-            }
-            ?>
 
-<?php include('footer.php'); ?>
+
+            function scrollRight() {
+                document.querySelector(".product-grid").scrollBy({ left: 300, behavior: "smooth" });
+            }
+        </script>
+
+        <div class="slider-controls">
+            <button onclick="scrollLeft()">⬅</button>
+            <button onclick="scrollRight()">➡</button>
+        </div>
+    </div>
+
+
+
+    </body>
+    </html>
+
+    <?php include('footer.php'); ?>
+
+    </body>
+    </html>

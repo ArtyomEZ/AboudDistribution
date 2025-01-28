@@ -14,18 +14,10 @@ body {
     text-align: center;
 }
 
-/* Titre principal */
-.container1 h2 {
-    font-size: 2rem;
-    color: #343a40;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
 /* Liste des produits */
 .product-grid {
     display: flex;
-    flex-wrap: nowrap; /* Pour un effet slider */
+    flex-wrap: nowrap; /* Effet slider */
     overflow-x: auto;
     gap: 20px;
     padding-bottom: 10px;
@@ -37,44 +29,59 @@ body {
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    text-align: left;
-    min-width: 250px; /* Pour garder un bon affichage */
+    text-align: center;
+    min-width: 250px;
     flex: 0 0 auto;
     border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 400px; /* Taille uniforme des cartes */
+    max-width: 300px;
 }
 
-/* Image produit */
+/* Image produit - Taille uniforme */
 .product-card img {
-    width: 100%;
-    height: auto;
+    width: 120px; /* Taille fixe pour toutes les images */
+    height: 120px;
+    object-fit: contain; /* Évite la déformation */
+    display: block;
+    margin: 0 auto;
     border-radius: 5px;
 }
 
-/* Nom du produit */
+/* Conteneur du texte */
+.product-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Nom du produit - Alignement uniforme */
 .product-card h3 {
     font-size: 1rem;
     color: #343a40;
     margin: 10px 0;
+    min-height: 50px; /* Fixe une hauteur pour tous les noms */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Référence */
-.product-card .product-ref {
-    font-size: 0.9rem;
-    color: #6c757d;
-}
-
-/* Prix */
+/* Prix - Alignement parfait */
 .product-card .product-price {
     font-size: 1.2rem;
     font-weight: bold;
     color: #000;
+    margin-bottom: 10px;
 }
 
-/* Évaluations */
-.product-card .rating {
-    color: #ff9900;
-    font-size: 0.9rem;
-    margin-bottom: 5px;
+/* Conteneur du bouton */
+.product-card .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
 }
 
 /* Bouton d'achat */
@@ -88,7 +95,6 @@ body {
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
 }
 
 .product-card .buy-btn:hover {
