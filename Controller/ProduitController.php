@@ -1,17 +1,24 @@
-<?php
+<?php /*
 
 use Model\BO\ProduitBO;
 use Model\BO\TypeProduitBO;
 use Model\DAO\ProduitDAO;
 use Model\DAO\TypeProduitDAO;
+
+require_once '../Model/BDDManager.php';
 require_once '../Model/DAO/TypeProduitDAO.php';
 require_once '../Model/DAO/ProduitDAO.php';
-require_once '../Model/BO/TypeProduitBO.php';
-require_once '../Model/BDDManager.php';
 
 class ProduitController
 {
-    private $bdd;
+    private $produitDAO;
+    private $typeProduitDAO;
+
+    public function __construct() {
+        $bdd = initialiseConnexionBDD();
+        $this->produitDAO = new ProduitDAO($bdd);
+        $this->typeProduitDAO = new TypeProduitDAO($bdd);
+    }
 
     public function dashboard()
     {
@@ -52,8 +59,13 @@ class ProduitController
 
             $bdd = initialiseConnexionBDD();
 
+            $daoProduit = new ProduitDAO($bdd);
+            $typesProduits = $daoProduit->getAllProduits();
+            $typeProduitDAO = new TypeProduitDAO($bdd);
+            $typesProduits = $typeProduitDAO->getAllTypeProduits();
+
             include "../View/header.php";
-            include "../View/pageCreationProduit.php";
+            include "../View/pageAjoutProduit.php";
             include  "../View/footer.php";
         } catch (\Exception $e) {
             $this->redirectWithError($e->getMessage());
@@ -130,6 +142,76 @@ class ProduitController
             return "❌ Erreur : " . $e->getMessage();
         }
     }
+
+    public function modifProduitPage() {
+        $produits = $this->produitDAO->getAllProduits();
+        $typesProduits = $this->typeProduitDAO->getAllTypeProduits();
+        $produitActuel = null;
+
+        if (isset($_GET['id_prod'])) {
+            $id_prod = (int) $_GET['id_prod'];
+            $produitActuel = $this->produitDAO->getProduitById($id_prod);
+        }
+
+        include '../View/header.php';
+        include '../Views/pageModifProduit.php';
+        include "../View/footer.php";
+    }
+
+    public function modifProduitBDD()
+    {
+        try {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifProduit'])) {
+                //$this->ensureLoggedInAs('administrateur');
+
+                $id_prod = $_POST['id_prod'];
+                $nom_prod = $_POST['nom_prod'] ?? '';
+                $desc_prod = $_POST['desc_prod'] ?? '';
+                $marq_prod = $_POST['marq_prod'] ?? 'pas d\'image';
+                $prix_prod = $_POST['prix_prod'] ?? 0;
+                $img_prod = $_POST['img_prod'] ?? '';
+                $id_typ_prod = (int)$_POST['id_typ_prod'];
+
+                if (!empty($nom_prod) && !empty($desc_prod) && !empty($marq_prod) && $prix_prod > 0 && $id_typ_prod > 0) {
+                    $typeProduit = new TypeProduitBO($id_typ_prod, '');
+                    $produitModifie = new ProduitBO($id_prod, $nom_prod, $desc_prod, $marq_prod, $prix_prod, $img_prod, $typeProduit);
+
+                    if ($this->produitDAO->updateProduit($produitModifie)) {
+                        header("Location: modifierProduit.php?id_prod=$id_prod&success=1");
+                        exit();
+                    } else {
+                        header("Location: modifierProduit.php?id_prod=$id_prod&error=1");
+                        exit();
+                    }
+
+                    return $result ? "✅ Produit suppprimé avec succès !" : "❌ Erreur lors de la suppression du produit.";
+                }
+            } return "Erreur de méthode";
+        } catch (\Exception $e) {
+            return "❌ Erreur : " . $e->getMessage();
+        }
+    }
+
+
+if($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $controller = new ProduitController();
+    try {
+        switch ($_GET['action']) {
+            case 'pageAjoutProduit':
+                $controller->ajoutProduitPage();
+                break;
+            case 'pageModifProduit':
+                $controller->modifProduitPage();
+                break;
+            case 'pageSupprimerProduit':
+                $controller->suppProduitPage();
+                break;
+        }
+    } catch (\Exception $e) {
+        $this->redirectWithError($e->getMessage());
+        exit;
+    }
+
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] ===  'ajoutProduitBDD') {
@@ -137,5 +219,89 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['act
     $controller->ajoutProduitBDD();
 }
 
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'suppProduitBDD') {
+    $controller = new ProduitController();
+    $controller->suppProduitBDD();
+}
 
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['action'] === 'modifProduitBDD') {
+    $controller = new ProduitController();
+    $controller->modifProduitBDD();
+}
+
+*/?>
+
+<?php
+
+use Model\BO\ProduitBO;
+use Model\BO\TypeProduitBO;
+use Model\DAO\ProduitDAO;
+use Model\DAO\TypeProduitDAO;
+
+require_once '../Model/DAO/ProduitDAO.php';
+require_once '../Model/DAO/TypeProduitDAO.php';
+require_once '../Model/BDDManager.php';
+require_once '../Model/BO/ProduitBO.php';
+require_once '../Model/BO/TypeProduitBO.php';
+
+class ProduitController {
+    private $produitDAO;
+    private $typeProduitDAO;
+
+    public function __construct() {
+        $bdd = initialiseConnexionBDD();
+        $this->produitDAO = new ProduitDAO($bdd);
+        $this->typeProduitDAO = new TypeProduitDAO($bdd);
+    }
+
+    public function pageModifProduit() {
+        $produits = $this->produitDAO->getAllProduits();
+        $typesProduits = $this->typeProduitDAO->getAllTypeProduits();
+        $produitActuel = null;
+
+        if (isset($_GET['id_prod'])) {
+            $id_prod = (int) $_GET['id_prod'];
+            $produitActuel = $this->produitDAO->getProduitById($id_prod);
+        }
+
+        include '../View/pageModifProduit.php';
+    }
+
+    public function modifProduitBDD() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_prod = (int) $_POST['id_prod'];
+            $nom_prod = $_POST['nom_prod'] ?? '';
+            $desc_prod = $_POST['desc_prod'] ?? '';
+            $marq_prod = $_POST['marq_prod'] ?? '';
+            $prix_prod = $_POST['prix_prod'] ?? 0;
+            $img_prod = $_POST['img_prod'] ?? '';
+            $id_typ_prod = (int) $_POST['id_typ_prod'];
+
+            if (!empty($nom_prod) && !empty($desc_prod) && !empty($marq_prod) && $prix_prod > 0 && $id_typ_prod > 0) {
+                $typeProduit = new TypeProduitBO($id_typ_prod, '');
+                $produitModifie = new ProduitBO($id_prod, $nom_prod, $desc_prod, $marq_prod, $prix_prod, $img_prod, $typeProduit);
+
+                $success = $this->produitDAO->updateProduit($produitModifie);
+
+                if ($success) {
+                    header("Location: pageModifProduit.php?id_prod=$id_prod&success=1");
+                    exit();
+                } else {
+                    header("Location: pageModifProduit.php?id_prod=$id_prod&error=1");
+                    exit();
+                }
+            }
+        }
+    }
+}
+
+if (isset($_GET['action'])) {
+    $controller = new ProduitController();
+
+    if ($_GET['action'] === 'modifProduit') {
+        $controller->pageModifProduit();
+    } elseif ($_GET['action'] === 'modifProduitBDD') {
+        $controller->modifProduitBDD();
+    }
+}
 ?>

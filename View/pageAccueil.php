@@ -12,12 +12,12 @@
 <?php
 include ('header.php');
 ?>
+
 <div class="container">
     <h2>Nos produits</h2>
     <div class="products">
     </div>
 </div>
-
 
 <?php
 include ('footer.php');

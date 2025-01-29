@@ -13,7 +13,7 @@ class ProduitBO
     private String $marq_prod;
     private int $prix_prod;
     private String $img_prod;
-    private TypeProduitBO $id_typ_prod;
+    private TypeProduitBO $typ_prod;
 
     /**
      * @param int $id_prod
@@ -22,10 +22,10 @@ class ProduitBO
      * @param string $marq_prod
      * @param int $prix_prod
      * @param string $img_prod
-     * @param TypeProduitBO $id_typ_prod
+     * @param TypeProduitBO $typ_prod
      */
 
-    public function __construct(int $id_prod, string $nom_prod, string $desc_prod, string $marq_prod, int $prix_prod, string $img_prod, TypeProduitBO $id_typ_prod)
+    public function __construct(int $id_prod, string $nom_prod, string $desc_prod, string $marq_prod, int $prix_prod, string $img_prod, TypeProduitBO $typ_prod)
     {
         $this->id_prod = $id_prod;
         $this->nom_prod = $nom_prod;
@@ -33,7 +33,7 @@ class ProduitBO
         $this->prix_prod = $prix_prod;
         $this->marq_prod = $marq_prod;
         $this->img_prod = $img_prod ?? 'pas d\'image';
-        $this->id_typ_prod = $id_typ_prod;
+        $this->typ_prod = $typ_prod;
     }
 
     public function getIdProd(): int
@@ -66,9 +66,14 @@ class ProduitBO
         $this->desc_prod = $desc_prod;
     }
 
-    public function getMarProd(): string
+    public function getMarqProd(): string
     {
         return $this->marq_prod;
+    }
+
+    public function setMarqProd(string $marq_prod): void
+    {
+        $this->marq_prod = $marq_prod;
     }
 
     public function getPrixProd(): int
@@ -91,18 +96,14 @@ class ProduitBO
         $this->img_prod = $img_prod;
     }
 
-    public function getMarqProd(): string
+    public function getTypProd(): TypeProduitBO
     {
-        return $this->marq_prod;
+        return $this->typ_prod;
     }
 
-    public function getIdTypProd(): TypeProduitBO
+    public function setTypProd(TypeProduitBO $typ_prod): void
     {
-        return $this->id_typ_prod;
+        $this->typ_prod = $typ_prod;
     }
-
-
-
-
 
 }
