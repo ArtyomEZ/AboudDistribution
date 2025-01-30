@@ -1,0 +1,185 @@
+Index: View/pageGestionProduit.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"fr\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Gestion des Produits</title>\r\n    <style>\r\n        body {\r\n            font-family: Arial, sans-serif;\r\n            background-color: #f5f5f5;\r\n            display: flex;\r\n            justify-content: center;\r\n            align-items: center;\r\n            height: 100vh;\r\n            margin: 0;\r\n        }\r\n        .container {\r\n            text-align: center;\r\n            background-color: #fff;\r\n            padding: 20px;\r\n            border-radius: 8px;\r\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n            max-width: 400px;\r\n            width: 100%;\r\n        }\r\n        .container h1 {\r\n            font-size: 24px;\r\n            margin-bottom: 20px;\r\n            color: #333;\r\n        }\r\n        .container button {\r\n            display: block;\r\n            width: 100%;\r\n            padding: 10px;\r\n            margin: 10px 0;\r\n            font-size: 18px;\r\n            border: none;\r\n            border-radius: 6px;\r\n            cursor: pointer;\r\n            transition: background-color 0.3s ease;\r\n        }\r\n        .btn-add {\r\n            background-color: #4CAF50;\r\n            color: white;\r\n        }\r\n        .btn-add:hover {\r\n            background-color: #45a049;\r\n        }\r\n        .btn-update {\r\n            background-color: #FFA500;\r\n            color: white;\r\n        }\r\n        .btn-update:hover {\r\n            background-color: #e69500;\r\n        }\r\n        .btn-delete {\r\n            background-color: #F44336;\r\n            color: white;\r\n        }\r\n        .btn-delete:hover {\r\n            background-color: #d32f2f;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n<div class=\"container\">\r\n    <h1>Gestion des Produits</h1>\r\n    <form action=\"pageAjoutProduit\" method=\"get\">\r\n        <button type=\"submit\" class=\"btn-add\">Ajouter un produit</button>\r\n    </form>\r\n    <form action=\"pageModifProduit.php\" method=\"get\">\r\n        <button type=\"submit\" class=\"btn-update\">Modifier un produit</button>\r\n    </form>\r\n    <form action=\"pageSuppProduit.php\" method=\"get\">\r\n        <button type=\"submit\" class=\"btn-delete\">Supprimer un produit</button>\r\n    </form>\r\n</div>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/pageGestionProduit.php b/View/pageGestionProduit.php
+--- a/View/pageGestionProduit.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/pageGestionProduit.php	(date 1738229510397)
+@@ -3,77 +3,23 @@
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <link rel="stylesheet" href="css/gestionProduit.css">
+     <title>Gestion des Produits</title>
+-    <style>
+-        body {
+-            font-family: Arial, sans-serif;
+-            background-color: #f5f5f5;
+-            display: flex;
+-            justify-content: center;
+-            align-items: center;
+-            height: 100vh;
+-            margin: 0;
+-        }
+-        .container {
+-            text-align: center;
+-            background-color: #fff;
+-            padding: 20px;
+-            border-radius: 8px;
+-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+-            max-width: 400px;
+-            width: 100%;
+-        }
+-        .container h1 {
+-            font-size: 24px;
+-            margin-bottom: 20px;
+-            color: #333;
+-        }
+-        .container button {
+-            display: block;
+-            width: 100%;
+-            padding: 10px;
+-            margin: 10px 0;
+-            font-size: 18px;
+-            border: none;
+-            border-radius: 6px;
+-            cursor: pointer;
+-            transition: background-color 0.3s ease;
+-        }
+-        .btn-add {
+-            background-color: #4CAF50;
+-            color: white;
+-        }
+-        .btn-add:hover {
+-            background-color: #45a049;
+-        }
+-        .btn-update {
+-            background-color: #FFA500;
+-            color: white;
+-        }
+-        .btn-update:hover {
+-            background-color: #e69500;
+-        }
+-        .btn-delete {
+-            background-color: #F44336;
+-            color: white;
+-        }
+-        .btn-delete:hover {
+-            background-color: #d32f2f;
+-        }
+-    </style>
+ </head>
+ <body>
+-<div class="container">
+-    <h1>Gestion des Produits</h1>
+-    <form action="pageAjoutProduit" method="get">
+-        <button type="submit" class="btn-add">Ajouter un produit</button>
+-    </form>
+-    <form action="pageModifProduit.php" method="get">
+-        <button type="submit" class="btn-update">Modifier un produit</button>
+-    </form>
+-    <form action="pageSuppProduit.php" method="get">
+-        <button type="submit" class="btn-delete">Supprimer un produit</button>
+-    </form>
+-</div>
++<?php include 'header.php' ?>
++    <div class="container">
++        <h1>Gestion des Produits</h1>
++        <form action="pageAjoutProduit" method="get">
++            <button type="submit" class="btn-add">Ajouter un produit</button>
++        </form>
++        <form action="pageModifProduit.php" method="get">
++            <button type="submit" class="btn-update">Modifier un produit</button>
++        </form>
++        <form action="pageSuppProduit.php" method="get">
++            <button type="submit" class="btn-delete">Supprimer un produit</button>
++        </form>
++    </div>
++<?php include 'footer.php' ?>
+ </body>
+ </html>
+Index: View/header.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n\r\n<link rel=\"stylesheet\" href=\"css/header.css\">\r\n<header class=\"main-header\">\r\n\r\n\r\n    <div class=\"header-top\">\r\n        <h1>Aboud Distribution</h1>\r\n        <a href=\"pageConnexion.php\"> <img src=\"https://cdn-icons-png.flaticon.com/512/5087/5087579.png\" height=\"100px\" align=\"right\"></a>\r\n    </div>\r\n    <nav class=\"header-navigation\">\r\n        <a href=\"pageAccueil.php\">Accueil</a>\r\n        <a href=\"pageProduits.php\">Nos Produits</a>\r\n        <a href=\"pageContact.php\">Contact</a>\r\n    </nav>\r\n\r\n    <div class=\"search-bar\">\r\n        <input type=\"search\" placeholder=\"Rechercher une pièce...\">\r\n        <button>Rechercher</button>\r\n    </div>\r\n    <nav class=\"categories-bar\">\r\n        <!-- Catégorie 1 -->\r\n        <div class=\"dropdown\">\r\n            <button class=\"dropdown-btn\">Moteur et Transmission</button>\r\n            <div class=\"dropdown-content\">\r\n                <a href=\"pageCategorie.php?categorie=huile\">Huiles et Lubrifiants</a>\r\n                <a href=\"pageCategorie.php?categorie=filtre\">Filtres</a>\r\n                <a href=\"pageCategorie.php?categorie=embrayage\">Embrayages</a>\r\n            </div>\r\n        </div>\r\n        <!-- Catégorie 2 -->\r\n        <div class=\"dropdown\">\r\n            <button class=\"dropdown-btn\">Éclairage et Électronique</button>\r\n            <div class=\"dropdown-content\">\r\n                <a href=\"pageCategorie.php?categorie=ampoule\">Ampoules</a>\r\n                <a href=\"pageCategorie.php?categorie=batterie\">Batteries</a>\r\n                <a href=\"pageCategorie.php?categorie=capteurs\">Capteurs et Relais</a>\r\n            </div>\r\n        </div>\r\n        <!-- Catégorie 3 -->\r\n        <div class=\"dropdown\">\r\n            <button class=\"dropdown-btn\">Freins et Suspensions</button>\r\n            <div class=\"dropdown-content\">\r\n                <a href=\"pageCategorie.php?categorie=plaquette\">Plaquettes de Frein</a>\r\n                <a href=\"pageCategorie.php?categorie=disque\">Disques de Frein</a>\r\n                <a href=\"pageCategorie.php?categorie=amortisseur\">Amortisseurs</a>\r\n            </div>\r\n        </div>\r\n    </nav>\r\n\r\n</header>\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/header.php b/View/header.php
+--- a/View/header.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/header.php	(date 1738229510397)
+@@ -1,5 +1,3 @@
+-
+-
+ <link rel="stylesheet" href="css/header.css">
+ <header class="main-header">
+ 
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"09925423-332a-4298-8e5b-1f709912f47c\" name=\"Changes\" comment=\"Commit header Admin\">\r\n      <change beforePath=\"$PROJECT_DIR$/Controller/ProduitController.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Controller/ProduitController.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Model/BO/ProduitBO.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Model/BO/ProduitBO.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Model/DAO/ProduitDAO.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Model/DAO/ProduitDAO.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/View/headerAdmin.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/View/headerAdmin.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/View/pageAccueil.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/View/pageAccueil.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/View/pageCreationProduit.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/View/pageAjoutProduit.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/View/pageGestionProduits.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/View/pageGestionProduit.php\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ComposerSettings\" synchronizationState=\"SYNCHRONIZE\">\r\n    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>\r\n    <execution />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"CSS File\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"Zakariyya\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;ChefPhoque&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/ArtyomEZ/AboudDistribution.git&quot;,\r\n    &quot;accountId&quot;: &quot;fdc81526-2b0c-4849-8f71-c980dd70a7e3&quot;\r\n  }\r\n}</component>\r\n  <component name=\"PhpDebugGeneral\" listening_started=\"true\" />\r\n  <component name=\"PhpWorkspaceProjectConfiguration\">\r\n    <include_path>\r\n      <path value=\"$PROJECT_DIR$/vendor/phpmailer/phpmailer\" />\r\n      <path value=\"$PROJECT_DIR$/vendor/composer\" />\r\n    </include_path>\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 1\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2rt1WFpULize5j2hH8CtDpdAqL4\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;Zakariyya&quot;,\r\n    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/wamp64/www/PHP/AboudDistribution&quot;,\r\n    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  },\r\n  &quot;keyToStringList&quot;: {\r\n    &quot;DatabaseDriversLRU&quot;: [\r\n      &quot;mysql&quot;\r\n    ]\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\wamp64\\www\\PHP\\AboudDistribution\\View\" />\r\n      <recent name=\"C:\\wamp64\\www\\PHP\\AboudDistribution\\Controller\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-PS-243.22562.164\" />\r\n        <option value=\"bundled-php-predefined-a98d8de5180a-7980c7aaca61-com.jetbrains.php.sharedIndexes-PS-243.22562.164\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"StructureViewState\">\r\n    <option name=\"selectedTab\" value=\"PHP\" />\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"09925423-332a-4298-8e5b-1f709912f47c\" name=\"Changes\" comment=\"\" />\r\n      <created>1737363586843</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1737363586843</updated>\r\n      <workItem from=\"1737363588062\" duration=\"6125000\" />\r\n      <workItem from=\"1737377773594\" duration=\"66343000\" />\r\n      <workItem from=\"1738056287244\" duration=\"5106000\" />\r\n      <workItem from=\"1738069561561\" duration=\"21099000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Premier commit la team nasdas\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737364574956</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737364574956</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Commit AdministrateurBO, AdministrateurDAO et Controller\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737553904392</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737553904392</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"ProduitDAO\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737560509677</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737560509677</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"Affichage des informations page produits\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737639628008</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737639628008</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"TypeProduitBO et DAO (CRUD)\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737647529499</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737647529499</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"Changement BO Produit\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737647610878</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737647610878</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Commit connexion\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737965706483</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737965706483</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"Commit connexion\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737965763612</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737965763612</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"Commit GetByIdTypeProd\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737994659251</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737994659251</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"Commit GetByIdTypeProd\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737994883644</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737994883644</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"Commit Pages gestion produits\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1738056890032</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1738056890032</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"Commit header Admin\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1738077152275</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1738077152275</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"Commit header Admin\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1738077327750</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1738077327750</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"Commit header Admin\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1738079779188</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1738079779188</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"15\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"Zakariyya\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Premier commit la team nasdas\" />\r\n    <MESSAGE value=\"Commit AdministrateurBO, AdministrateurDAO et Controller\" />\r\n    <MESSAGE value=\"ProduitDAO\" />\r\n    <MESSAGE value=\"Affichage des informations page produits\" />\r\n    <MESSAGE value=\"TypeProduitBO et DAO (CRUD)\" />\r\n    <MESSAGE value=\"Changement BO Produit\" />\r\n    <MESSAGE value=\"Commit connexion\" />\r\n    <MESSAGE value=\"Commit GetByIdTypeProd\" />\r\n    <MESSAGE value=\"Commit Pages gestion produits\" />\r\n    <MESSAGE value=\"Commit header Admin\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Commit header Admin\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/.idea/workspace.xml	(date 1738229510397)
+@@ -4,14 +4,10 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="09925423-332a-4298-8e5b-1f709912f47c" name="Changes" comment="Commit header Admin">
+-      <change beforePath="$PROJECT_DIR$/Controller/ProduitController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/ProduitController.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Model/BO/ProduitBO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/BO/ProduitBO.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Model/DAO/ProduitDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/DAO/ProduitDAO.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/View/headerAdmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/headerAdmin.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/View/pageAccueil.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageAccueil.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/View/pageCreationProduit.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageAjoutProduit.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/View/pageGestionProduits.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageGestionProduit.php" afterDir="false" />
++    <list default="true" id="09925423-332a-4298-8e5b-1f709912f47c" name="Changes" comment="Commit Controller et GestionProduit">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/View/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/header.php" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/View/pageGestionProduit.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageGestionProduit.php" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -113,7 +109,8 @@
+       <workItem from="1737363588062" duration="6125000" />
+       <workItem from="1737377773594" duration="66343000" />
+       <workItem from="1738056287244" duration="5106000" />
+-      <workItem from="1738069561561" duration="21099000" />
++      <workItem from="1738069561561" duration="23119000" />
++      <workItem from="1738224726871" duration="3301000" />
+     </task>
+     <task id="LOCAL-00001" summary="Premier commit la team nasdas">
+       <option name="closed" value="true" />
+@@ -227,7 +224,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1738079779188</updated>
+     </task>
+-    <option name="localTasksCounter" value="15" />
++    <task id="LOCAL-00015" summary="Commit Controller et GestionProduit">
++      <option name="closed" value="true" />
++      <created>1738164657936</created>
++      <option name="number" value="00015" />
++      <option name="presentableId" value="LOCAL-00015" />
++      <option name="project" value="LOCAL" />
++      <updated>1738164657936</updated>
++    </task>
++    <option name="localTasksCounter" value="16" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -267,6 +272,7 @@
+     <MESSAGE value="Commit GetByIdTypeProd" />
+     <MESSAGE value="Commit Pages gestion produits" />
+     <MESSAGE value="Commit header Admin" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Commit header Admin" />
++    <MESSAGE value="Commit Controller et GestionProduit" />
++    <option name="LAST_COMMIT_MESSAGE" value="Commit Controller et GestionProduit" />
+   </component>
+ </project>
+\ No newline at end of file

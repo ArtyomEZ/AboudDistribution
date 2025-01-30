@@ -1,0 +1,108 @@
+/* 🌍 Mise en page du body */
+body {
+    display: flex;
+    flex-direction: column; /* 🔹 Header → Contenu → Footer */
+    justify-content: space-between; /* 🔹 S’assure que tout est bien réparti */
+    min-height: 100vh; /* 🔹 S’assure que la page prend toute la hauteur */
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* 🔹 Fond clair */
+}
+
+/* 🔹 HEADER - Fixe en haut mais garde sa hauteur normale */
+header {
+    width: 100%;
+    background-color: #001c33;
+    color: white;
+    padding: 10px 20px; /* 🔹 Taille normale du header */
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: auto; /* 🔹 Laisse le header s’adapter au contenu */
+}
+
+/* 📦 Conteneur principal (contenu de la page) */
+main {
+    flex: 1; /* 🔹 Permet au contenu de s’étendre */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin-top: 60px; /* 🔹 Évite que le contenu soit caché sous le header */
+}
+
+/* 📦 Contenu de gestion des produits */
+.container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    width: 90%;
+    text-align: center;
+    border-left: 5px solid #ff6600; /* 🟠 Bordure orange */
+}
+
+/* 🏷️ Titre */
+.container h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #001c33;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* 🔘 Boutons */
+.container button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    border: none;
+}
+
+/* 🟢 Ajouter */
+.btn-add {
+    background-color: #008cba;
+    color: white;
+}
+.btn-add:hover {
+    background-color: #0073a6;
+}
+
+/* 🟠 Modifier */
+.btn-update {
+    background-color: #ff6600;
+    color: white;
+}
+.btn-update:hover {
+    background-color: #cc5200;
+}
+
+/* 🔴 Supprimer */
+.btn-delete {
+    background-color: #F44336;
+    color: white;
+}
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
+
+/* 🔹 FOOTER - Collé en bas sans être trop large */
+footer {
+    width: 100%;
+    background-color: #001c33;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: relative; /* 🔹 Empêche qu’il soit fixe si le contenu est long */
+    margin-top: auto;
+}
