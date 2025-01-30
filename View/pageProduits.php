@@ -34,7 +34,13 @@ try {
         <link rel="stylesheet" href="css/produits.css">
     </head>
     <body>
-
+    <?php
+    session_start();
+    if (isset($_SESSION['error_message'])) {
+        echo "<p style='color: red;'>" . htmlspecialchars($_SESSION['error_message']) . "</p>";
+        unset($_SESSION['error_message']); // Supprime le message après l'affichage
+    }
+    ?>
     <div class="container1">
         <h2>Nos Produits</h2>
         <div class="product-grid">

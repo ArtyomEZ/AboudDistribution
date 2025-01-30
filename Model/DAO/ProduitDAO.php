@@ -20,7 +20,9 @@ class ProduitDAO
         $produits = [];
 
         try {
-            $query = "SELECT * FROM produit p
+            $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
+                         p.img_prod, p.id_typ_prod, t.lib_typ_prod 
+                  FROM produit p
                   JOIN type_produit t ON p.id_typ_prod = t.id_typ_prod"; // 🔥 Correction ici
 
             $stmt = $this->bdd->query($query);
@@ -53,10 +55,10 @@ class ProduitDAO
                 $produit->getIdProd(),
                 $produit->getNomProd(),
                 $produit->getDescProd(),
-                $produit->getMarqProd(),
+                $produit->getMarProd(),
                 $produit->getPrixProd(),
                 $produit->getImgProd(),
-                $produit->getTypProd()->getIdTypProd() // Récupération de l’ID du TypeProduitBO
+                $produit->getIdProd() // Récupération de l’ID du TypeProduitBO
             ]);
 
             return $res;
@@ -65,46 +67,6 @@ class ProduitDAO
             return false;
         }
     }
-
-    public function updateAdministrateur(AdministrateurBO $administrateur): bool
-    {
-        try {
-            $query = "UPDATE Administrateur SET login_admin = ?, mdp_admin = ? WHERE id_admin = ?";
-            $stmt = $this->bdd->prepare($query);
-
-            $result = $stmt->execute([
-                $administrateur->getIdAdmin(),
-                $administrateur->getLoginAdmin(),
-                $administrateur->getMdpAdmin()
-            ]);
-
-            return $result;
-        } catch (\Exception $e) {
-            echo "Erreur lors de la mise à jour de l'administrateur : " . $e->getMessage();
-            return false;
-        }
-    }public function updateProduit(ProduitBO $produit): bool
-{
-    try {
-        $query = "UPDATE Produit SET nom_prod = ?, desc_prod = ?, marq_prod = ?, prix_prod = ?, img_prod = ?, id_typ_prod = ? WHERE id_prod = ?";
-        $stmt = $this->bdd->prepare($query);
-
-        $result = $stmt->execute([
-            $produit->getNomProd(),
-            $produit->getDescProd(),
-            $produit->getMarqProd(),
-            $produit->getPrixProd(),
-            $produit->getImgProd(),
-            $produit->getTypProd()->getIdTypProd(),
-            $produit->getIdProd()
-        ]);
-
-        return $result;
-    } catch (\Exception $e) {
-        echo "Erreur lors de la mise à jour de l'administrateur : " . $e->getMessage();
-        return false;
-    }
-}
 
     public function deleteProduit($id_prod) {
         try {
@@ -115,35 +77,4 @@ class ProduitDAO
             echo "Erreur lors de la suppression du produit : " . $e->getMessage();
         }
     }
-
-    public function getProduitById($id_prod)
-    {
-        try {
-            $query = "SELECT * FROM Produit WHERE id_prod = ?";
-            $stmt = $this->bdd->prepare($query);
-            $stmt->execute(
-                [$id_prod]
-            );
-
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($result) {
-                return new ProduitBO(
-                    $result['id_prod'],
-                    $result['nom_prod'],
-                    $result['desc_prod'],
-                    $result['marq_prod'],
-                    $result['prix_prod'],
-                    $result['img_prod'] ?? 'pas d\'image',
-                    new TypeProduitBO(
-                        $result['id_typ_prod'], ''
-                    )
-                );
-            } else {
-                return null;
-            }
-        } catch (\Exception $e) {
-            echo "Erreur lors de la récupération du produit : " . $e->getMessage();
-        }
-    }
 }
-

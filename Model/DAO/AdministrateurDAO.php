@@ -3,6 +3,7 @@
 namespace Model\DAO;
 
 use Model\BO\AdministrateurBO;
+use PDO;
 
 class AdministrateurDAO
 {
@@ -64,6 +65,32 @@ class AdministrateurDAO
         } catch (\Exception $e) {
             echo "Erreur lors de la suppression de l'administrateur : " . $e->getMessage();
             return false;
+        }
+    }
+
+    public function loginAdmin(string $login, string $password): ?AdministrateurBO
+    {
+        try {
+            $query = "SELECT * FROM Administrateur WHERE login_admin = ?";
+            $stmt = $this->bdd->prepare($query);
+            $stmt->execute([$login]);
+
+            $adminData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($adminData && password_verify($password, $adminData['mot_de_passe'])) {
+                // Création de l'objet AdministrateurBO avec les données récupérées
+                $admin = new AdministrateurBO();
+                $admin->setIdAdmin($adminData['id_admin']);
+
+                $admin->setLoginAdmin($adminData['login_admin']); // Assure-toi que le setter existe
+
+                return $admin; // Retourne l'objet administrateur connecté
+            } else {
+                return null; // Identifiants incorrects
+            }
+        } catch (\Exception $e) {
+            echo "Erreur lors de la connexion : " . $e->getMessage();
+            return null;
         }
     }
 }

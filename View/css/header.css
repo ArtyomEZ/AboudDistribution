@@ -1,3 +1,6 @@
+/* Importation de la police Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap'); /* Importation de la police */
+
 /* Style général du header */
 .main-header {
     background-color: #001c33; /* Couleur sombre */
@@ -14,8 +17,11 @@
 }
 
 .main-header .header-top h1 {
-    color: #ff6600; /* Orange pour le titre */
-    font-size: 24px;
+    color: #333333; /* Gris foncé pour un look sobre */
+    font-size: 32px; /* Taille plus grande pour une meilleure visibilité */
+    font-family: 'Montserrat', sans-serif; /* Police élégante et professionnelle */
+    font-weight: 600; /* Légèrement plus épais pour plus d'impact */
+    margin: 0;
 }
 
 /* Navigation principale */

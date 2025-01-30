@@ -16,6 +16,13 @@
 include 'header.php';
 
 ?>
+<?php
+session_start();
+if (isset($_SESSION['error_message'])) {
+    echo "<p style='color: red;'>" . htmlspecialchars($_SESSION['error_message']) . "</p>";
+    unset($_SESSION['error_message']); // Supprime le message après l'affichage
+}
+?>
 <div class="contact-container">
     <h1>Contactez-nous</h1>
     <form method="post" action="mail.php" class="contact-form-wrapper">
