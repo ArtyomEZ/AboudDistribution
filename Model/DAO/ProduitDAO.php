@@ -68,6 +68,42 @@ class ProduitDAO
         }
     }
 
+    public function searchProduits(string $searchTerm): array {
+        $produits = [];
+
+        try {
+            $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
+                         p.img_prod, p.id_typ_prod, t.lib_typ_prod 
+                  FROM produit p
+                  JOIN type_produit t ON p.id_typ_prod = t.id_typ_prod
+                  WHERE p.nom_prod LIKE :searchTerm";
+
+            $stmt = $this->bdd->prepare($query);
+            $stmt->execute(['searchTerm' => "%$searchTerm%"]);
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $produit = new ProduitBO(
+                    $row['id_prod'],
+                    $row['nom_prod'],
+                    $row['desc_prod'],
+                    $row['marq_prod'],
+                    $row['prix_prod'],
+                    $row['img_prod'] ?? '',
+                    new TypeProduitBO($row['id_typ_prod'], $row['lib_typ_prod'])
+                );
+                $produits[] = $produit;
+            }
+        } catch (\Exception $e) {
+            echo "Erreur lors de la recherche des produits : " . $e->getMessage();
+        }
+
+        return $produits;
+    }
+
+
+
+
+
     public function deleteProduit($id_prod) {
         try {
             $query = "DELETE FROM produit WHERE id_prod = ?";

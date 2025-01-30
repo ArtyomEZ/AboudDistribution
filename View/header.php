@@ -1,5 +1,5 @@
 
-
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/header.css">
 <header class="main-header">
 
@@ -13,10 +13,11 @@
         <a href="pageProduits.php">Nos Produits</a>
         <a href="pageContact.php">Contact</a>
     </nav>
-
+<form action="../Controller/rechercheController.php" method="GET">
     <div class="search-bar">
-        <input type="search" placeholder="Rechercher une pièce...">
+        <input  type="search"  name="search" placeholder="Rechercher une pièce...">
         <button>Rechercher</button>
+</form>
         <a href="pageConnexion.php">
           <div align="right"> <img src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png" alt="Connexion"  height="80px"></div>
         </a>

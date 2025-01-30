@@ -1,8 +1,10 @@
 <?php
 
+use Model\DAO\AdministrateurDAO;
+
 class LoginController
 {
-    public function login($login, $mdp)
+    public function login($login, $mdp): void
     {
 
         $bdd = initialiseConnexionBDD();
@@ -15,7 +17,7 @@ class LoginController
 
         try {
             $administrateurDAO = new AdministrateurDAO($bdd);
-            $user = $administrateurDAO->authentification($login, $mdp);
+            $user = $administrateurDAO->loginAdmin($login, $mdp);
             if ($user) {
                 $role = "administrateur";
             }
