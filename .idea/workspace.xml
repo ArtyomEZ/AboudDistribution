@@ -5,13 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09925423-332a-4298-8e5b-1f709912f47c" name="Changes" comment="Commit header Admin">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controller/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/LoginController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controller/ProduitController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/ProduitController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/BO/ProduitBO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/BO/ProduitBO.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model/DAO/ProduitDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/DAO/ProduitDAO.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/headerAdmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/headerAdmin.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/pageAccueil.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageAccueil.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/pageCreationProduit.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageAjoutProduit.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/pageGestionProduits.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageGestionProduit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/css/ajout.css" beforeDir="false" afterPath="$PROJECT_DIR$/View/css/ajout.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/header.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/pageAjoutProduit.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageAjoutProduit.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/pageConnexion.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageConnexion.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/pageModifProduit.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageModifProduit.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,6 +116,8 @@
       <workItem from="1737377773594" duration="66343000" />
       <workItem from="1738056287244" duration="5106000" />
       <workItem from="1738069561561" duration="21099000" />
+      <workItem from="1738250533516" duration="1466000" />
+      <workItem from="1738328709005" duration="8014000" />
     </task>
     <task id="LOCAL-00001" summary="Premier commit la team nasdas">
       <option name="closed" value="true" />

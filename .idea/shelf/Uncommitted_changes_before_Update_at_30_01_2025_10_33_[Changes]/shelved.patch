@@ -1,0 +1,753 @@
+Index: View/pageProduits.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\r\ninclude('header.php');\r\nuse Model\\DAO\\ProduitDAO;\r\n\r\n\r\nrequire_once('../Model/DAO/ProduitDAO.php');\r\nrequire_once('../Model/BO/ProduitBO.php');\r\nrequire_once('../Model/BDDManager.php');\r\nrequire_once('../Model/BO/TypeProduitBO.php');\r\n// Connexion à la base de données\r\ntry {\r\n    $a = initialiseConnexionBDD();\r\n    // Création de l'objet DAO\r\n    $produitsDAO = new ProduitDAO($a);\r\n\r\n    // Récupération des produits depuis la base de données\r\n    $produits = $produitsDAO->getAllProduits();\r\n\r\n} catch (PDOException $e) {\r\n    echo \"<p>Erreur lors de la connexion à la base de données : \" . $e->getMessage() . \"</p>\";\r\n}\r\n\r\n\r\n\r\n?>\r\n\r\n\r\n    <!DOCTYPE html>\r\n    <html lang=\"fr\">\r\n    <head>\r\n        <meta charset=\"UTF-8\">\r\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n        <title>Nos Produits - Boutique Automobile</title>\r\n        <link rel=\"stylesheet\" href=\"css/produits.css\">\r\n    </head>\r\n    <body>\r\n\r\n    <div class=\"container1\">\r\n        <h2>Nos Produits</h2>\r\n        <div class=\"product-grid\">\r\n            <?php foreach ($produits as $produit): ?>\r\n                <div class=\"product-card\">\r\n                    <img src=\"<?= $produit->getImgProd(); ?>\" alt=\"<?= htmlspecialchars($produit->getNomProd()); ?>\">\r\n                    <div class=\"rating\">⭐⭐⭐⭐⭐</div>\r\n                    <h3><?= htmlspecialchars($produit->getNomProd()); ?></h3>\r\n                    <p class=\"product-price\"><?= htmlspecialchars($produit->getPrixProd()); ?> €</p>\r\n                    <div class=\"button-container\">\r\n                        <button class=\"buy-btn\">\uD83D\uDED2 Ajouter au panier</button>\r\n                    </div>\r\n                </div>\r\n            <?php endforeach; ?>\r\n        </div>\r\n\r\n\r\n    </div>\r\n\r\n\r\n\r\n    </body>\r\n    </html>\r\n\r\n    <?php include('footer.php'); ?>\r\n\r\n    </body>\r\n    </html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/pageProduits.php b/View/pageProduits.php
+--- a/View/pageProduits.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/pageProduits.php	(date 1738229512044)
+@@ -34,7 +34,13 @@
+         <link rel="stylesheet" href="css/produits.css">
+     </head>
+     <body>
+-
++    <?php
++    session_start();
++    if (isset($_SESSION['error_message'])) {
++        echo "<p style='color: red;'>" . htmlspecialchars($_SESSION['error_message']) . "</p>";
++        unset($_SESSION['error_message']); // Supprime le message après l'affichage
++    }
++    ?>
+     <div class="container1">
+         <h2>Nos Produits</h2>
+         <div class="product-grid">
+Index: View/pageGestionProduit.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"fr\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Gestion des Produits</title>\r\n    <style>\r\n        body {\r\n            font-family: Arial, sans-serif;\r\n            background-color: #f5f5f5;\r\n            display: flex;\r\n            justify-content: center;\r\n            align-items: center;\r\n            height: 100vh;\r\n            margin: 0;\r\n        }\r\n        .container {\r\n            text-align: center;\r\n            background-color: #fff;\r\n            padding: 20px;\r\n            border-radius: 8px;\r\n            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n            max-width: 400px;\r\n            width: 100%;\r\n        }\r\n        .container h1 {\r\n            font-size: 24px;\r\n            margin-bottom: 20px;\r\n            color: #333;\r\n        }\r\n        .container button {\r\n            display: block;\r\n            width: 100%;\r\n            padding: 10px;\r\n            margin: 10px 0;\r\n            font-size: 18px;\r\n            border: none;\r\n            border-radius: 6px;\r\n            cursor: pointer;\r\n            transition: background-color 0.3s ease;\r\n        }\r\n        .btn-add {\r\n            background-color: #4CAF50;\r\n            color: white;\r\n        }\r\n        .btn-add:hover {\r\n            background-color: #45a049;\r\n        }\r\n        .btn-update {\r\n            background-color: #FFA500;\r\n            color: white;\r\n        }\r\n        .btn-update:hover {\r\n            background-color: #e69500;\r\n        }\r\n        .btn-delete {\r\n            background-color: #F44336;\r\n            color: white;\r\n        }\r\n        .btn-delete:hover {\r\n            background-color: #d32f2f;\r\n        }\r\n    </style>\r\n</head>\r\n<body>\r\n<div class=\"container\">\r\n    <h1>Gestion des Produits</h1>\r\n    <form action=\"pageAjoutProduit\" method=\"get\">\r\n        <button type=\"submit\" class=\"btn-add\">Ajouter un produit</button>\r\n    </form>\r\n    <form action=\"pageModifProduit.php\" method=\"get\">\r\n        <button type=\"submit\" class=\"btn-update\">Modifier un produit</button>\r\n    </form>\r\n    <form action=\"pageSuppProduit.php\" method=\"get\">\r\n        <button type=\"submit\" class=\"btn-delete\">Supprimer un produit</button>\r\n    </form>\r\n</div>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/pageGestionProduit.php b/View/pageGestionProduit.php
+--- a/View/pageGestionProduit.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/pageGestionProduit.php	(date 1738229519049)
+@@ -3,77 +3,23 @@
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <link rel="stylesheet" href="css/gestionProduit.css">
+     <title>Gestion des Produits</title>
+-    <style>
+-        body {
+-            font-family: Arial, sans-serif;
+-            background-color: #f5f5f5;
+-            display: flex;
+-            justify-content: center;
+-            align-items: center;
+-            height: 100vh;
+-            margin: 0;
+-        }
+-        .container {
+-            text-align: center;
+-            background-color: #fff;
+-            padding: 20px;
+-            border-radius: 8px;
+-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+-            max-width: 400px;
+-            width: 100%;
+-        }
+-        .container h1 {
+-            font-size: 24px;
+-            margin-bottom: 20px;
+-            color: #333;
+-        }
+-        .container button {
+-            display: block;
+-            width: 100%;
+-            padding: 10px;
+-            margin: 10px 0;
+-            font-size: 18px;
+-            border: none;
+-            border-radius: 6px;
+-            cursor: pointer;
+-            transition: background-color 0.3s ease;
+-        }
+-        .btn-add {
+-            background-color: #4CAF50;
+-            color: white;
+-        }
+-        .btn-add:hover {
+-            background-color: #45a049;
+-        }
+-        .btn-update {
+-            background-color: #FFA500;
+-            color: white;
+-        }
+-        .btn-update:hover {
+-            background-color: #e69500;
+-        }
+-        .btn-delete {
+-            background-color: #F44336;
+-            color: white;
+-        }
+-        .btn-delete:hover {
+-            background-color: #d32f2f;
+-        }
+-    </style>
+ </head>
+ <body>
+-<div class="container">
+-    <h1>Gestion des Produits</h1>
+-    <form action="pageAjoutProduit" method="get">
+-        <button type="submit" class="btn-add">Ajouter un produit</button>
+-    </form>
+-    <form action="pageModifProduit.php" method="get">
+-        <button type="submit" class="btn-update">Modifier un produit</button>
+-    </form>
+-    <form action="pageSuppProduit.php" method="get">
+-        <button type="submit" class="btn-delete">Supprimer un produit</button>
+-    </form>
+-</div>
++<?php include 'header.php' ?>
++    <div class="container">
++        <h1>Gestion des Produits</h1>
++        <form action="pageAjoutProduit" method="get">
++            <button type="submit" class="btn-add">Ajouter un produit</button>
++        </form>
++        <form action="pageModifProduit.php" method="get">
++            <button type="submit" class="btn-update">Modifier un produit</button>
++        </form>
++        <form action="pageSuppProduit.php" method="get">
++            <button type="submit" class="btn-delete">Supprimer un produit</button>
++        </form>
++    </div>
++<?php include 'footer.php' ?>
+ </body>
+ </html>
+Index: View/pageAccueil.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"fr\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Pièces Auto - Vente en ligne</title>\r\n    <link type=\"text/css\" rel=\"stylesheet\" href=\"css/Accueil.css\">\r\n    <link type=\"text/css\" rel=\"stylesheet\" href=\"css/header.css\">\r\n</head>\r\n<body class=\"home-page\">\r\n\r\n<?php\r\ninclude ('header.php');\r\n?>\r\n\r\n<div class=\"container\">\r\n    <h2>Nos produits</h2>\r\n    <div class=\"products\">\r\n    </div>\r\n</div>\r\n\r\n<?php\r\ninclude ('footer.php');\r\n?>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/pageAccueil.php b/View/pageAccueil.php
+--- a/View/pageAccueil.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/pageAccueil.php	(date 1738229541720)
+@@ -12,13 +12,13 @@
+ <?php
+ include ('header.php');
+ ?>
+-
+ <div class="container">
+     <h2>Nos produits</h2>
+     <div class="products">
+     </div>
+ </div>
+ 
++
+ <?php
+ include ('footer.php');
+ ?>
+Index: View/header.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n\r\n<link rel=\"stylesheet\" href=\"css/header.css\">\r\n<header class=\"main-header\">\r\n\r\n\r\n    <div class=\"header-top\">\r\n        <h1>Aboud Distribution</h1>\r\n        <a href=\"pageConnexion.php\"> <img src=\"https://cdn-icons-png.flaticon.com/512/5087/5087579.png\" height=\"100px\" align=\"right\"></a>\r\n    </div>\r\n    <nav class=\"header-navigation\">\r\n        <a href=\"pageAccueil.php\">Accueil</a>\r\n        <a href=\"pageProduits.php\">Nos Produits</a>\r\n        <a href=\"pageContact.php\">Contact</a>\r\n    </nav>\r\n\r\n    <div class=\"search-bar\">\r\n        <input type=\"search\" placeholder=\"Rechercher une pièce...\">\r\n        <button>Rechercher</button>\r\n    </div>\r\n    <nav class=\"categories-bar\">\r\n        <!-- Catégorie 1 -->\r\n        <div class=\"dropdown\">\r\n            <button class=\"dropdown-btn\">Moteur et Transmission</button>\r\n            <div class=\"dropdown-content\">\r\n                <a href=\"pageCategorie.php?categorie=huile\">Huiles et Lubrifiants</a>\r\n                <a href=\"pageCategorie.php?categorie=filtre\">Filtres</a>\r\n                <a href=\"pageCategorie.php?categorie=embrayage\">Embrayages</a>\r\n            </div>\r\n        </div>\r\n        <!-- Catégorie 2 -->\r\n        <div class=\"dropdown\">\r\n            <button class=\"dropdown-btn\">Éclairage et Électronique</button>\r\n            <div class=\"dropdown-content\">\r\n                <a href=\"pageCategorie.php?categorie=ampoule\">Ampoules</a>\r\n                <a href=\"pageCategorie.php?categorie=batterie\">Batteries</a>\r\n                <a href=\"pageCategorie.php?categorie=capteurs\">Capteurs et Relais</a>\r\n            </div>\r\n        </div>\r\n        <!-- Catégorie 3 -->\r\n        <div class=\"dropdown\">\r\n            <button class=\"dropdown-btn\">Freins et Suspensions</button>\r\n            <div class=\"dropdown-content\">\r\n                <a href=\"pageCategorie.php?categorie=plaquette\">Plaquettes de Frein</a>\r\n                <a href=\"pageCategorie.php?categorie=disque\">Disques de Frein</a>\r\n                <a href=\"pageCategorie.php?categorie=amortisseur\">Amortisseurs</a>\r\n            </div>\r\n        </div>\r\n    </nav>\r\n\r\n</header>\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/header.php b/View/header.php
+--- a/View/header.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/header.php	(date 1738229512044)
+@@ -1,22 +1,26 @@
+ 
+-
++<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="css/header.css">
+ <header class="main-header">
+ 
+ 
+     <div class="header-top">
+         <h1>Aboud Distribution</h1>
+-        <a href="pageConnexion.php"> <img src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png" height="100px" align="right"></a>
++
+     </div>
+     <nav class="header-navigation">
+         <a href="pageAccueil.php">Accueil</a>
+         <a href="pageProduits.php">Nos Produits</a>
+         <a href="pageContact.php">Contact</a>
+     </nav>
+-
++<form action="../Controller/rechercheController.php" method="GET">
+     <div class="search-bar">
+-        <input type="search" placeholder="Rechercher une pièce...">
++        <input  type="search"  name="search" placeholder="Rechercher une pièce...">
+         <button>Rechercher</button>
++</form>
++        <a href="pageConnexion.php">
++          <div align="right"> <img src="https://cdn-icons-png.flaticon.com/512/5087/5087579.png" alt="Connexion"  height="80px"></div>
++        </a>
+     </div>
+     <nav class="categories-bar">
+         <!-- Catégorie 1 -->
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"09925423-332a-4298-8e5b-1f709912f47c\" name=\"Changes\" comment=\"Commit header Admin\">\r\n      <change beforePath=\"$PROJECT_DIR$/Controller/ProduitController.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Controller/ProduitController.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Model/BO/ProduitBO.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Model/BO/ProduitBO.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/Model/DAO/ProduitDAO.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Model/DAO/ProduitDAO.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/View/headerAdmin.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/View/headerAdmin.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/View/pageAccueil.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/View/pageAccueil.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/View/pageCreationProduit.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/View/pageAjoutProduit.php\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/View/pageGestionProduits.php\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/View/pageGestionProduit.php\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ComposerSettings\" synchronizationState=\"SYNCHRONIZE\">\r\n    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>\r\n    <execution />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"CSS File\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"Zakariyya\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;ChefPhoque&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/ArtyomEZ/AboudDistribution.git&quot;,\r\n    &quot;accountId&quot;: &quot;fdc81526-2b0c-4849-8f71-c980dd70a7e3&quot;\r\n  }\r\n}</component>\r\n  <component name=\"PhpDebugGeneral\" listening_started=\"true\" />\r\n  <component name=\"PhpWorkspaceProjectConfiguration\">\r\n    <include_path>\r\n      <path value=\"$PROJECT_DIR$/vendor/phpmailer/phpmailer\" />\r\n      <path value=\"$PROJECT_DIR$/vendor/composer\" />\r\n    </include_path>\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 1\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2rt1WFpULize5j2hH8CtDpdAqL4\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;Zakariyya&quot;,\r\n    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/wamp64/www/PHP/AboudDistribution&quot;,\r\n    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  },\r\n  &quot;keyToStringList&quot;: {\r\n    &quot;DatabaseDriversLRU&quot;: [\r\n      &quot;mysql&quot;\r\n    ]\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\wamp64\\www\\PHP\\AboudDistribution\\View\" />\r\n      <recent name=\"C:\\wamp64\\www\\PHP\\AboudDistribution\\Controller\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-PS-243.22562.164\" />\r\n        <option value=\"bundled-php-predefined-a98d8de5180a-7980c7aaca61-com.jetbrains.php.sharedIndexes-PS-243.22562.164\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"StructureViewState\">\r\n    <option name=\"selectedTab\" value=\"PHP\" />\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"09925423-332a-4298-8e5b-1f709912f47c\" name=\"Changes\" comment=\"\" />\r\n      <created>1737363586843</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1737363586843</updated>\r\n      <workItem from=\"1737363588062\" duration=\"6125000\" />\r\n      <workItem from=\"1737377773594\" duration=\"66343000\" />\r\n      <workItem from=\"1738056287244\" duration=\"5106000\" />\r\n      <workItem from=\"1738069561561\" duration=\"21099000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Premier commit la team nasdas\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737364574956</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737364574956</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Commit AdministrateurBO, AdministrateurDAO et Controller\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737553904392</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737553904392</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"ProduitDAO\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737560509677</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737560509677</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"Affichage des informations page produits\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737639628008</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737639628008</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"TypeProduitBO et DAO (CRUD)\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737647529499</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737647529499</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"Changement BO Produit\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737647610878</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737647610878</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Commit connexion\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737965706483</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737965706483</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"Commit connexion\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737965763612</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737965763612</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"Commit GetByIdTypeProd\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737994659251</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737994659251</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"Commit GetByIdTypeProd\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737994883644</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1737994883644</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"Commit Pages gestion produits\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1738056890032</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1738056890032</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"Commit header Admin\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1738077152275</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1738077152275</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"Commit header Admin\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1738077327750</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1738077327750</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00014\" summary=\"Commit header Admin\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1738079779188</created>\r\n      <option name=\"number\" value=\"00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00014\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1738079779188</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"15\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"Zakariyya\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Premier commit la team nasdas\" />\r\n    <MESSAGE value=\"Commit AdministrateurBO, AdministrateurDAO et Controller\" />\r\n    <MESSAGE value=\"ProduitDAO\" />\r\n    <MESSAGE value=\"Affichage des informations page produits\" />\r\n    <MESSAGE value=\"TypeProduitBO et DAO (CRUD)\" />\r\n    <MESSAGE value=\"Changement BO Produit\" />\r\n    <MESSAGE value=\"Commit connexion\" />\r\n    <MESSAGE value=\"Commit GetByIdTypeProd\" />\r\n    <MESSAGE value=\"Commit Pages gestion produits\" />\r\n    <MESSAGE value=\"Commit header Admin\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Commit header Admin\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/.idea/workspace.xml	(date 1738229519057)
+@@ -4,14 +4,10 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="09925423-332a-4298-8e5b-1f709912f47c" name="Changes" comment="Commit header Admin">
+-      <change beforePath="$PROJECT_DIR$/Controller/ProduitController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/ProduitController.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Model/BO/ProduitBO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/BO/ProduitBO.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Model/DAO/ProduitDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/DAO/ProduitDAO.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/View/headerAdmin.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/headerAdmin.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/View/pageAccueil.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageAccueil.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/View/pageCreationProduit.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageAjoutProduit.php" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/View/pageGestionProduits.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageGestionProduit.php" afterDir="false" />
++    <list default="true" id="09925423-332a-4298-8e5b-1f709912f47c" name="Changes" comment="Commit Controller et GestionProduit">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/View/header.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/header.php" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/View/pageGestionProduit.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageGestionProduit.php" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -113,7 +109,8 @@
+       <workItem from="1737363588062" duration="6125000" />
+       <workItem from="1737377773594" duration="66343000" />
+       <workItem from="1738056287244" duration="5106000" />
+-      <workItem from="1738069561561" duration="21099000" />
++      <workItem from="1738069561561" duration="23119000" />
++      <workItem from="1738224726871" duration="3301000" />
+     </task>
+     <task id="LOCAL-00001" summary="Premier commit la team nasdas">
+       <option name="closed" value="true" />
+@@ -227,7 +224,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1738079779188</updated>
+     </task>
+-    <option name="localTasksCounter" value="15" />
++    <task id="LOCAL-00015" summary="Commit Controller et GestionProduit">
++      <option name="closed" value="true" />
++      <created>1738164657936</created>
++      <option name="number" value="00015" />
++      <option name="presentableId" value="LOCAL-00015" />
++      <option name="project" value="LOCAL" />
++      <updated>1738164657936</updated>
++    </task>
++    <option name="localTasksCounter" value="16" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -267,6 +272,7 @@
+     <MESSAGE value="Commit GetByIdTypeProd" />
+     <MESSAGE value="Commit Pages gestion produits" />
+     <MESSAGE value="Commit header Admin" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Commit header Admin" />
++    <MESSAGE value="Commit Controller et GestionProduit" />
++    <option name="LAST_COMMIT_MESSAGE" value="Commit Controller et GestionProduit" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: Model/DAO/AdministrateurDAO.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\r\n\r\nnamespace Model\\DAO;\r\n\r\nuse Model\\BO\\AdministrateurBO;\r\n\r\nclass AdministrateurDAO\r\n{\r\n    private $bdd;\r\n\r\n    public function __construct($bdd)\r\n    {\r\n        $this->bdd = $bdd;\r\n    }\r\n\r\n    public function createAdministrateur(AdministrateurBO $administrateur): bool\r\n    {\r\n        try {\r\n            $query = \"INSERT INTO Administrateur (login_admin, mdp_admin) VALUES (?, ?)\";\r\n            $stmt = $this->bdd->prepare($query);\r\n\r\n            $result = $stmt->execute([\r\n                $administrateur->getLoginAdmin(),\r\n                $administrateur->getMdpAdmin()\r\n            ]);\r\n\r\n            return $result;\r\n        } catch (\\Exception $e) {\r\n            echo \"Erreur lors de la création de l'administrateur : \" . $e->getMessage();\r\n            return false;\r\n        }\r\n    }\r\n\r\n    public function updateAdministrateur(AdministrateurBO $administrateur): bool\r\n    {\r\n        try {\r\n            $query = \"UPDATE Administrateur SET login_admin = ?, mdp_admin = ? WHERE id_admin = ?\";\r\n            $stmt = $this->bdd->prepare($query);\r\n\r\n            $result = $stmt->execute([\r\n                $administrateur->getIdAdmin(),\r\n                $administrateur->getLoginAdmin(),\r\n                $administrateur->getMdpAdmin()\r\n            ]);\r\n\r\n            return $result;\r\n        } catch (\\Exception $e) {\r\n            echo \"Erreur lors de la mise à jour de l'administrateur : \" . $e->getMessage();\r\n            return false;\r\n        }\r\n    }\r\n\r\n    public function deleteAdministrateur(AdministrateurBO $administrateur): bool\r\n    {\r\n        try {\r\n            $query = \"DELETE FROM Administrateur WHERE id_admin = ?\";\r\n            $stmt = $this->bdd->prepare($query);\r\n\r\n            $result = $stmt->execute([\r\n                $administrateur->getIdAdmin()\r\n            ]);\r\n\r\n            return $result;\r\n        } catch (\\Exception $e) {\r\n            echo \"Erreur lors de la suppression de l'administrateur : \" . $e->getMessage();\r\n            return false;\r\n        }\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Model/DAO/AdministrateurDAO.php b/Model/DAO/AdministrateurDAO.php
+--- a/Model/DAO/AdministrateurDAO.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/Model/DAO/AdministrateurDAO.php	(date 1738229512029)
+@@ -3,6 +3,7 @@
+ namespace Model\DAO;
+ 
+ use Model\BO\AdministrateurBO;
++use PDO;
+ 
+ class AdministrateurDAO
+ {
+@@ -66,4 +67,30 @@
+             return false;
+         }
+     }
++
++    public function loginAdmin(string $login, string $password): ?AdministrateurBO
++    {
++        try {
++            $query = "SELECT * FROM Administrateur WHERE login_admin = ?";
++            $stmt = $this->bdd->prepare($query);
++            $stmt->execute([$login]);
++
++            $adminData = $stmt->fetch(PDO::FETCH_ASSOC);
++
++            if ($adminData && password_verify($password, $adminData['mot_de_passe'])) {
++                // Création de l'objet AdministrateurBO avec les données récupérées
++                $admin = new AdministrateurBO();
++                $admin->setIdAdmin($adminData['id_admin']);
++
++                $admin->setLoginAdmin($adminData['login_admin']); // Assure-toi que le setter existe
++
++                return $admin; // Retourne l'objet administrateur connecté
++            } else {
++                return null; // Identifiants incorrects
++            }
++        } catch (\Exception $e) {
++            echo "Erreur lors de la connexion : " . $e->getMessage();
++            return null;
++        }
++    }
+ }
+\ No newline at end of file
+Index: Model/DAO/ProduitDAO.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\r\n\r\nnamespace Model\\DAO;\r\n\r\nuse Model\\BO\\ProduitBO;\r\nuse Model\\BO\\TypeProduitBO; // Import de TypeProduitBO\r\nuse PDO;\r\n\r\nrequire_once('../Model/BO/TypeProduitBO.php'); // Inclure TypeProduitBO si nécessaire\r\n\r\nclass ProduitDAO\r\n{\r\n    private $bdd;\r\n\r\n    public function __construct(PDO $bdd) {\r\n        $this->bdd = $bdd;\r\n    }\r\n\r\n    public function getAllProduits(): array {\r\n        $produits = [];\r\n\r\n        try {\r\n            $query = \"SELECT * FROM produit p\r\n                  JOIN type_produit t ON p.id_typ_prod = t.id_typ_prod\"; // \uD83D\uDD25 Correction ici\r\n\r\n            $stmt = $this->bdd->query($query);\r\n\r\n            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {\r\n                $produit = new ProduitBO(\r\n                    $row['id_prod'],\r\n                    $row['nom_prod'],\r\n                    $row['desc_prod'],\r\n                    $row['marq_prod'],\r\n                    $row['prix_prod'],\r\n                    $row['img_prod'] ?? '',\r\n                    new TypeProduitBO($row['id_typ_prod'], $row['lib_typ_prod']) // \uD83D\uDD25 Correction ici\r\n                );\r\n                $produits[] = $produit;\r\n            }\r\n        } catch (\\Exception $e) {\r\n            echo \"Erreur lors de la récupération des produits : \" . $e->getMessage();\r\n        }\r\n        return $produits;\r\n    }\r\n\r\n    public function createProduit(ProduitBO $produit): bool {\r\n        try {\r\n            $query = \"INSERT INTO produit (id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod, id_typ_prod) \r\n                      VALUES (?, ?, ?, ?, ?, ?, ?)\";\r\n            $stmt = $this->bdd->prepare($query);\r\n\r\n            $res = $stmt->execute([\r\n                $produit->getIdProd(),\r\n                $produit->getNomProd(),\r\n                $produit->getDescProd(),\r\n                $produit->getMarqProd(),\r\n                $produit->getPrixProd(),\r\n                $produit->getImgProd(),\r\n                $produit->getTypProd()->getIdTypProd() // Récupération de l’ID du TypeProduitBO\r\n            ]);\r\n\r\n            return $res;\r\n        } catch (\\Exception $e) {\r\n            echo \"Erreur lors de la création du produit : \" . $e->getMessage();\r\n            return false;\r\n        }\r\n    }\r\n\r\n    public function updateAdministrateur(AdministrateurBO $administrateur): bool\r\n    {\r\n        try {\r\n            $query = \"UPDATE Administrateur SET login_admin = ?, mdp_admin = ? WHERE id_admin = ?\";\r\n            $stmt = $this->bdd->prepare($query);\r\n\r\n            $result = $stmt->execute([\r\n                $administrateur->getIdAdmin(),\r\n                $administrateur->getLoginAdmin(),\r\n                $administrateur->getMdpAdmin()\r\n            ]);\r\n\r\n            return $result;\r\n        } catch (\\Exception $e) {\r\n            echo \"Erreur lors de la mise à jour de l'administrateur : \" . $e->getMessage();\r\n            return false;\r\n        }\r\n    }public function updateProduit(ProduitBO $produit): bool\r\n{\r\n    try {\r\n        $query = \"UPDATE Produit SET nom_prod = ?, desc_prod = ?, marq_prod = ?, prix_prod = ?, img_prod = ?, id_typ_prod = ? WHERE id_prod = ?\";\r\n        $stmt = $this->bdd->prepare($query);\r\n\r\n        $result = $stmt->execute([\r\n            $produit->getNomProd(),\r\n            $produit->getDescProd(),\r\n            $produit->getMarqProd(),\r\n            $produit->getPrixProd(),\r\n            $produit->getImgProd(),\r\n            $produit->getTypProd()->getIdTypProd(),\r\n            $produit->getIdProd()\r\n        ]);\r\n\r\n        return $result;\r\n    } catch (\\Exception $e) {\r\n        echo \"Erreur lors de la mise à jour de l'administrateur : \" . $e->getMessage();\r\n        return false;\r\n    }\r\n}\r\n\r\n    public function deleteProduit($id_prod) {\r\n        try {\r\n            $query = \"DELETE FROM produit WHERE id_prod = ?\";\r\n            $stmt = $this->bdd->prepare($query);\r\n            $stmt->execute([$id_prod]);\r\n        } catch (\\Exception $e) {\r\n            echo \"Erreur lors de la suppression du produit : \" . $e->getMessage();\r\n        }\r\n    }\r\n\r\n    public function getProduitById($id_prod)\r\n    {\r\n        try {\r\n            $query = \"SELECT * FROM Produit WHERE id_prod = ?\";\r\n            $stmt = $this->bdd->prepare($query);\r\n            $stmt->execute(\r\n                [$id_prod]\r\n            );\r\n\r\n            $result = $stmt->fetch(PDO::FETCH_ASSOC);\r\n            if ($result) {\r\n                return new ProduitBO(\r\n                    $result['id_prod'],\r\n                    $result['nom_prod'],\r\n                    $result['desc_prod'],\r\n                    $result['marq_prod'],\r\n                    $result['prix_prod'],\r\n                    $result['img_prod'] ?? 'pas d\\'image',\r\n                    new TypeProduitBO(\r\n                        $result['id_typ_prod'], ''\r\n                    )\r\n                );\r\n            } else {\r\n                return null;\r\n            }\r\n        } catch (\\Exception $e) {\r\n            echo \"Erreur lors de la récupération du produit : \" . $e->getMessage();\r\n        }\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Model/DAO/ProduitDAO.php b/Model/DAO/ProduitDAO.php
+--- a/Model/DAO/ProduitDAO.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/Model/DAO/ProduitDAO.php	(date 1738229568517)
+@@ -20,7 +20,9 @@
+         $produits = [];
+ 
+         try {
+-            $query = "SELECT * FROM produit p
++            $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
++                         p.img_prod, p.id_typ_prod, t.lib_typ_prod 
++                  FROM produit p
+                   JOIN type_produit t ON p.id_typ_prod = t.id_typ_prod"; // 🔥 Correction ici
+ 
+             $stmt = $this->bdd->query($query);
+@@ -53,10 +55,10 @@
+                 $produit->getIdProd(),
+                 $produit->getNomProd(),
+                 $produit->getDescProd(),
+-                $produit->getMarqProd(),
++                $produit->getMarProd(),
+                 $produit->getPrixProd(),
+                 $produit->getImgProd(),
+-                $produit->getTypProd()->getIdTypProd() // Récupération de l’ID du TypeProduitBO
++                $produit->getIdProd() // Récupération de l’ID du TypeProduitBO
+             ]);
+ 
+             return $res;
+@@ -65,46 +67,6 @@
+             return false;
+         }
+     }
+-
+-    public function updateAdministrateur(AdministrateurBO $administrateur): bool
+-    {
+-        try {
+-            $query = "UPDATE Administrateur SET login_admin = ?, mdp_admin = ? WHERE id_admin = ?";
+-            $stmt = $this->bdd->prepare($query);
+-
+-            $result = $stmt->execute([
+-                $administrateur->getIdAdmin(),
+-                $administrateur->getLoginAdmin(),
+-                $administrateur->getMdpAdmin()
+-            ]);
+-
+-            return $result;
+-        } catch (\Exception $e) {
+-            echo "Erreur lors de la mise à jour de l'administrateur : " . $e->getMessage();
+-            return false;
+-        }
+-    }public function updateProduit(ProduitBO $produit): bool
+-{
+-    try {
+-        $query = "UPDATE Produit SET nom_prod = ?, desc_prod = ?, marq_prod = ?, prix_prod = ?, img_prod = ?, id_typ_prod = ? WHERE id_prod = ?";
+-        $stmt = $this->bdd->prepare($query);
+-
+-        $result = $stmt->execute([
+-            $produit->getNomProd(),
+-            $produit->getDescProd(),
+-            $produit->getMarqProd(),
+-            $produit->getPrixProd(),
+-            $produit->getImgProd(),
+-            $produit->getTypProd()->getIdTypProd(),
+-            $produit->getIdProd()
+-        ]);
+-
+-        return $result;
+-    } catch (\Exception $e) {
+-        echo "Erreur lors de la mise à jour de l'administrateur : " . $e->getMessage();
+-        return false;
+-    }
+-}
+ 
+     public function deleteProduit($id_prod) {
+         try {
+@@ -115,35 +77,4 @@
+             echo "Erreur lors de la suppression du produit : " . $e->getMessage();
+         }
+     }
+-
+-    public function getProduitById($id_prod)
+-    {
+-        try {
+-            $query = "SELECT * FROM Produit WHERE id_prod = ?";
+-            $stmt = $this->bdd->prepare($query);
+-            $stmt->execute(
+-                [$id_prod]
+-            );
+-
+-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+-            if ($result) {
+-                return new ProduitBO(
+-                    $result['id_prod'],
+-                    $result['nom_prod'],
+-                    $result['desc_prod'],
+-                    $result['marq_prod'],
+-                    $result['prix_prod'],
+-                    $result['img_prod'] ?? 'pas d\'image',
+-                    new TypeProduitBO(
+-                        $result['id_typ_prod'], ''
+-                    )
+-                );
+-            } else {
+-                return null;
+-            }
+-        } catch (\Exception $e) {
+-            echo "Erreur lors de la récupération du produit : " . $e->getMessage();
+-        }
+-    }
+ }
+-
+Index: View/css/connexion.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>body {\r\n    font-family: Arial, sans-serif;\r\n    margin: 0;\r\n    padding: 0;\r\n    background-color: #f8f9fa;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    height: 100vh;\r\n}\r\n\r\n.auth-container {\r\n    width: 100%;\r\n    max-width: 400px;\r\n    background-color: #fff;\r\n    padding: 20px;\r\n    border-radius: 8px;\r\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\r\n    margin: auto;\r\n}\r\n\r\n.auth-container h2 {\r\n    text-align: center;\r\n    margin-bottom: 20px;\r\n    color: #343a40;\r\n}\r\n\r\n.auth-container form {\r\n    display: flex;\r\n    flex-direction: column;\r\n}\r\n\r\n.auth-container form input[type=\"text\"],\r\n.auth-container form input[type=\"password\"] {\r\n    padding: 10px;\r\n    margin-bottom: 15px;\r\n    border: 1px solid #ccc;\r\n    border-radius: 4px;\r\n    font-size: 14px;\r\n}\r\n\r\n.auth-container form button {\r\n    background-color: #007bff;\r\n    color: #fff;\r\n    border: none;\r\n    padding: 10px;\r\n    border-radius: 4px;\r\n    font-size: 16px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n}\r\n\r\n.auth-container form button:hover {\r\n    background-color: #0056b3;\r\n}\r\n\r\n.auth-register-link {\r\n    text-align: center;\r\n    margin-top: 15px;\r\n}\r\n\r\n.auth-register-link a {\r\n    color: #007bff;\r\n    text-decoration: none;\r\n    transition: color 0.3s ease;\r\n}\r\n\r\n.auth-register-link a:hover {\r\n    color: #0056b3;\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/css/connexion.css b/View/css/connexion.css
+--- a/View/css/connexion.css	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/css/connexion.css	(date 1738229512029)
+@@ -1,13 +1,25 @@
+-body {
+-    font-family: Arial, sans-serif;
+-    margin: 0;
+-    padding: 0;
+-    background-color: #f8f9fa;
++.main-body {
+     display: flex;
+     flex-direction: column;
+-    align-items: center;
+-    height: 100vh;
++    min-height: 100vh; /* Garde la hauteur de la page */
++}
++
++.auth-container {
++    margin-top: 80px; /* Ajoute un espace sous le header */
+ }
++
++.content {
++    flex: 1; /* Permet d'étirer le contenu sans casser le design */
++}
++
++footer {
++    width: 100%;
++    background-color: #343a40;
++    color: white;
++    text-align: center;
++    padding: 10px;
++}
++
+ 
+ .auth-container {
+     width: 100%;
+Index: Controller/rechercheController.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Controller/rechercheController.php b/Controller/rechercheController.php
+new file mode 100644
+--- /dev/null	(date 1738229512029)
++++ b/Controller/rechercheController.php	(date 1738229512029)
+@@ -0,0 +1,39 @@
++<?php
++require_once '../Model/BDDManager.php';
++require_once '../Model/DAO/ProduitDAO.php';
++require_once '../Model/BO/ProduitBO.php';
++require_once '../Model/BO/TypeProduitBO.php';
++
++use Model\DAO\ProduitDAO;
++
++$bdd = initialiseConnexionBDD();
++
++// Vérifie si une recherche a été soumise
++if (isset($_GET['search']) && !empty($_GET['search'])) {
++    $searchTerm = htmlspecialchars($_GET['search']);
++
++    $produitDAO = new ProduitDAO($bdd);
++    $resultats = $produitDAO->searchProduits($searchTerm);
++
++    // Stocker les résultats et le terme de recherche en session
++    session_start();
++    $_SESSION['searchTerm'] = $searchTerm;
++
++    if (!empty($resultats)) {
++        // Stocker les résultats en session et rediriger vers la page d'affichage
++        $_SESSION['resultats'] = $resultats;
++        header("Location: ../view/resultatproduits.php");
++        exit;
++    } else {
++        // Si aucun produit n'est trouvé, rediriger avec un message d'erreur
++        $_SESSION['error_message'] = "Aucun produit trouvé pour la recherche : " . $searchTerm;
++        header("Location: " . $_SERVER['HTTP_REFERER']); // Redirection vers la page précédente
++        exit;
++    }
++} else {
++    // Si aucun terme de recherche n'est spécifié, rediriger avec un message d'erreur
++    session_start();
++    $_SESSION['error_message'] = "Veuillez entrer un terme de recherche.";
++    header("Location: " . $_SERVER['HTTP_REFERER']); // Redirection vers la page précédente
++    exit;
++}
+Index: View/pageConnexion.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n<?php\r\ninclude  'header.php';\r\n?>\r\n\r\n\r\n<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>Page de Connexion</title>\r\n    <link rel=\"stylesheet\" href=\"css/header.css\">\r\n    <link rel=\"stylesheet\" href=\"css/connexion.css\">\r\n</head>\r\n<body>\r\n\r\n<div class=\"auth-container\">\r\n    <h2>Connexion</h2>\r\n    <form>\r\n        <input type=\"text\" placeholder=\"Nom d'utilisateur\" required>\r\n        <input type=\"password\" placeholder=\"Mot de passe\" required>\r\n        <button type=\"submit\">Se connecter</button>\r\n    </form>\r\n    <div class=\"auth-register-link\">\r\n        <p>Pas encore inscrit ? <a href=\"#\">Créer un compte</a></p>\r\n    </div>\r\n</div>\r\n\r\n<?php include 'footer.php'; ?>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/pageConnexion.php b/View/pageConnexion.php
+--- a/View/pageConnexion.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/pageConnexion.php	(date 1738229512044)
+@@ -3,7 +3,7 @@
+ include  'header.php';
+ ?>
+ 
+-
++<br>
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+@@ -13,20 +13,21 @@
+     <link rel="stylesheet" href="css/header.css">
+     <link rel="stylesheet" href="css/connexion.css">
+ </head>
+-<body>
+-
+-<div class="auth-container">
+-    <h2>Connexion</h2>
+-    <form>
+-        <input type="text" placeholder="Nom d'utilisateur" required>
+-        <input type="password" placeholder="Mot de passe" required>
+-        <button type="submit">Se connecter</button>
+-    </form>
+-    <div class="auth-register-link">
+-        <p>Pas encore inscrit ? <a href="#">Créer un compte</a></p>
++<br>
++<BR>
++<body class="main-body">
++<div class="content">
++    <div class="auth-container">
++        <h2>Connexion</h2>
++        <form>
++            <input type="text" placeholder="Nom d'utilisateur" required>
++            <input type="password" placeholder="Mot de passe" required>
++            <button type="submit">Se connecter</button>
++        </form>
++        <div class="auth-register-link">
++            <p>Pas encore inscrit ? <a href="#">Créer un compte</a></p>
++        </div>
+     </div>
+ </div>
+-
+ <?php include 'footer.php'; ?>
+ </body>
+-</html>
+\ No newline at end of file
+Index: View/resultatproduits.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/resultatproduits.php b/View/resultatproduits.php
+new file mode 100644
+--- /dev/null	(date 1738229512044)
++++ b/View/resultatproduits.php	(date 1738229512044)
+@@ -0,0 +1,58 @@
++<?php
++require_once '../Model/BDDManager.php';
++require_once '../Model/DAO/ProduitDAO.php';
++require_once '../Model/BO/ProduitBO.php';
++require_once '../Model/BO/TypeProduitBO.php';
++
++use Model\BO\ProduitBO;
++
++// Start the session to access session data
++session_start();
++
++// Ensure 'resultats' exists in the session
++if (isset($_SESSION['resultats']) && !empty($_SESSION['resultats'])) {
++    $resultats = $_SESSION['resultats'];
++} else {
++    $resultats = [];
++}
++
++?>
++
++<!DOCTYPE html>
++<html lang="fr">
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>Résultats de Recherche - Boutique Automobile</title>
++    <link rel="stylesheet" href="css/produits.css"> <!-- Lien vers le CSS -->
++</head>
++<body>
++
++<?php include('header.php'); ?>
++
++<div class="container1">
++    <h2>Résultats pour : <?= htmlspecialchars($_SESSION['searchTerm'] ?? ''); ?></h2>
++
++    <div class="product-grid">
++        <?php if (!empty($resultats)): ?>
++            <?php foreach ($resultats as $produit): ?>
++                <div class="product-card">
++                    <img src="<?= $produit->getImgProd(); ?>" alt="<?= htmlspecialchars($produit->getNomProd()); ?>">
++                    <div class="rating">⭐⭐⭐⭐⭐</div>
++                    <h3><?= htmlspecialchars($produit->getNomProd()); ?></h3>
++                    <p class="product-price"><?= htmlspecialchars($produit->getPrixProd()); ?> €</p>
++                    <div class="button-container">
++                        <button class="buy-btn">🛒 Ajouter au panier</button>
++                    </div>
++                </div>
++            <?php endforeach; ?>
++        <?php else: ?>
++            <p>Aucun produit trouvé pour cette recherche.</p>
++        <?php endif; ?>
++    </div>
++</div>
++
++<?php include('footer.php'); ?>
++
++</body>
++</html>
+Index: Controller/LoginController.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?php\r\n\r\nclass LoginController\r\n{\r\n    public function login($login, $mdp)\r\n    {\r\n\r\n        $bdd = initialiseConnexionBDD();\r\n        if (!$bdd) {\r\n            $this->redirectWithError(\"Impossible de se connecter à la base de données.\");\r\n        }\r\n\r\n        $user = null;\r\n        $role = null;\r\n\r\n        try {\r\n            $administrateurDAO = new AdministrateurDAO($bdd);\r\n            $user = $administrateurDAO->authentification($login, $mdp);\r\n            if ($user) {\r\n                $role = \"administrateur\";\r\n            }\r\n        } catch (\\Exception $e) {\r\n            $this->redirectWithError(\"Erreur lors de l'authentification : \" . $e->getMessage());\r\n        }\r\n\r\n        if ($user && $role) {\r\n            $this->startSession($user, $role);\r\n        } else {\r\n            $this->redirectWithError(\"Identifiants incorrects ou utilisateur introuvable.\");\r\n        }\r\n    }\r\n\r\n    private function StartSession($user, $role)\r\n    {\r\n        if(session_status() === PHP_SESSION_NONE) {\r\n            session_start();\r\n        }\r\n\r\n        $_SESSION['id'] = $user->getAdminId();\r\n        $_SESSION['login'] = $user->getAdminLogin();\r\n        $_SESSION['mdp'] = $user->getAdminMdp();\r\n        $_SESSION['role'] = $role;\r\n\r\n        header(\"Location: ../Controller/ProduitController.php?action=dashboard\");\r\n    }\r\n\r\n    private function redirectWithError($message)\r\n    {\r\n        header(\"Location: ../../index.php?error=\" . urlencode($message));\r\n        exit;\r\n    }\r\n}\r\n\r\n    if($_SERVER[\"REQUEST_METHOD\"] == \"POST\") {\r\n        $login = $_POST[\"login\"];\r\n        $mdp = $_POST[\"mdp\"];\r\n\r\n        if(empty($login)) {\r\n            header(\"Location: ../index.php?error=Le champ login est obligatoire.\");\r\n        }\r\n\r\n        if(empty($mdp)) {\r\n            header(\"Location: ../index.php?error=Le champ mdp est obligatoire.\");\r\n        }\r\n\r\n        $controller = new LoginController();\r\n        $controller->login($login, $mdp);\r\n    } else {\r\n        header(\"Location: ../index.php?error=Requête invalide.\");\r\n        exit;\r\n    }\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Controller/LoginController.php b/Controller/LoginController.php
+--- a/Controller/LoginController.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/Controller/LoginController.php	(date 1738229512029)
+@@ -1,8 +1,10 @@
+ <?php
+ 
++use Model\DAO\AdministrateurDAO;
++
+ class LoginController
+ {
+-    public function login($login, $mdp)
++    public function login($login, $mdp): void
+     {
+ 
+         $bdd = initialiseConnexionBDD();
+@@ -15,7 +17,7 @@
+ 
+         try {
+             $administrateurDAO = new AdministrateurDAO($bdd);
+-            $user = $administrateurDAO->authentification($login, $mdp);
++            $user = $administrateurDAO->loginAdmin($login, $mdp);
+             if ($user) {
+                 $role = "administrateur";
+             }
+Index: View/pageApropos.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"fr\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n    <title>À Propos - Aboud Distribution Givors</title>\r\n    <link rel=\"stylesheet\" href=\"css/a_propos.css\">\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css\">\r\n</head>\r\n<body>\r\n<?php include 'header.php'; ?>\r\n\r\n<header>\r\n    <nav>\r\n        <!-- Menu de navigation -->\r\n    </nav>\r\n</header>\r\n\r\n<main>\r\n    <section class=\"about\">\r\n        <div class=\"container\">\r\n            <h2 class=\"animate__animated\">À Propos de Aboud Distribution Givors</h2>\r\n            <p>Bienvenue chez <strong>Aboud Distribution</strong>, votre magasin automobile de confiance situé à Givors. Depuis plusieurs années, nous nous engageons à fournir des produits de haute qualité pour répondre aux besoins des passionnés d'automobile et des professionnels.</p>\r\n\r\n            <h3>Notre Mission</h3>\r\n            <p>Chez Aboud Distribution, notre mission est de vous offrir un large choix de pièces et accessoires automobiles aux meilleurs prix. Nous travaillons avec des marques renommées pour garantir fiabilité, performance et satisfaction.</p>\r\n\r\n            <h3>Pourquoi Nous Choisir ?</h3>\r\n            <ul>\r\n                <li class=\"fade-in\">Un large inventaire de produits adaptés à tous les véhicules.</li>\r\n                <li class=\"fade-in\">Des experts à votre écoute pour vous conseiller.</li>\r\n                <li class=\"fade-in\">Des prix compétitifs et des offres régulières.</li>\r\n                <li class=\"fade-in\">Un emplacement pratique à Givors, facile d'accès.</li>\r\n            </ul>\r\n\r\n            <h3>Où Nous Trouver ?</h3>\r\n            <p>Notre magasin est situé au <strong>centre de Givors</strong>, à proximité des grands axes routiers. Nous vous accueillons du lundi au vendredi de <strong>9h à 12h</strong> puis de <strong>14h à 18h</strong> et le samedi de <strong>9h à 12h</strong> pour répondre à vos besoins en matière de pièces et accessoires automobiles.</p>\r\n\r\n            <div align=\"center\">\r\n                <iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5584.13740014995!2d4.768811776507023!3d45.589163671076165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f4e6bbae3751ab%3A0x6bb794304af087cd!2s3%20Pl.%20du%20Colonel%20Fabien%2C%2069700%20Givors!5e0!3m2!1sfr!2sfr!4v1737465124714!5m2!1sfr!2sfr\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>\r\n            </div>\r\n\r\n            <h3>Nos Services</h3>\r\n            <p>En plus de notre large gamme de produits, nous proposons :</p>\r\n            <ul>\r\n                <li class=\"fade-in\">Un service de commande spéciale pour des produits rares.</li>\r\n                <li class=\"fade-in\">Une assistance personnalisée pour le choix des équipements.</li>\r\n                <li class=\"fade-in\">Des promotions régulières pour nos clients fidèles.</li>\r\n            </ul>\r\n\r\n            <p>N'hésitez pas à nous rendre visite pour découvrir tout ce que nous avons à offrir !</p>\r\n        </div>\r\n    </section>\r\n</main>\r\n\r\n<?php include 'footer.php'; ?>\r\n\r\n<script>\r\n\r\n    document.addEventListener('DOMContentLoaded', () => {\r\n        const observer = new IntersectionObserver((entries) => {\r\n            entries.forEach(entry => {\r\n                if (entry.isIntersecting) {\r\n                    entry.target.classList.add('animate__fadeInUp');\r\n                }\r\n            });\r\n        });\r\n\r\n        document.querySelectorAll('.animate__animated').forEach(el => observer.observe(el));\r\n\r\n        // Animation pour les listes\r\n        document.querySelectorAll('.fade-in').forEach((el, index) => {\r\n            setTimeout(() => el.style.opacity = 1, index * 200);\r\n        });\r\n    });\r\n\r\n\r\n    document.querySelectorAll('a[href^=\"#\"]').forEach(anchor => {\r\n        anchor.addEventListener('click', function (e) {\r\n            e.preventDefault();\r\n            document.querySelector(this.getAttribute('href')).scrollIntoView({\r\n                behavior: 'smooth'\r\n            });\r\n        });\r\n    });\r\n</script>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/pageApropos.php b/View/pageApropos.php
+--- a/View/pageApropos.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/pageApropos.php	(date 1738229512044)
+@@ -15,7 +15,13 @@
+         <!-- Menu de navigation -->
+     </nav>
+ </header>
+-
++<?php
++session_start();
++if (isset($_SESSION['error_message'])) {
++    echo "<p style='color: red;'>" . htmlspecialchars($_SESSION['error_message']) . "</p>";
++    unset($_SESSION['error_message']); // Supprime le message après l'affichage
++}
++?>
+ <main>
+     <section class="about">
+         <div class="container">
+Index: View/css/header.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>/* Style général du header */\r\n.main-header {\r\n    background-color: #001c33; /* Couleur sombre */\r\n    color: white;\r\n    padding: 10px 20px;\r\n    font-family: Arial, sans-serif;\r\n}\r\n\r\n.main-header .header-top {\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: space-between;\r\n    padding: 10px 0;\r\n}\r\n\r\n.main-header .header-top h1 {\r\n    color: #ff6600; /* Orange pour le titre */\r\n    font-size: 24px;\r\n}\r\n\r\n/* Navigation principale */\r\n.main-header .header-navigation {\r\n    display: flex;\r\n    justify-content: center;\r\n    gap: 20px;\r\n    margin: 10px 0;\r\n}\r\n\r\n.main-header .header-navigation a {\r\n    color: white;\r\n    text-decoration: none;\r\n    font-size: 16px;\r\n    padding: 8px 15px;\r\n    transition: background-color 0.3s ease;\r\n}\r\n\r\n.main-header .header-navigation a:hover {\r\n    background-color: #ff6600;\r\n    border-radius: 5px;\r\n}\r\n\r\n/* Barre de recherche */\r\n.main-header .search-bar {\r\n    display: flex;\r\n    justify-content: center;\r\n    align-items: center;\r\n    gap: 10px;\r\n    margin: 10px 0;\r\n}\r\n\r\n.main-header .search-bar input[type=\"search\"] {\r\n    padding: 10px;\r\n    width: 300px;\r\n    border: 1px solid #ddd;\r\n    border-radius: 5px;\r\n    font-size: 14px;\r\n}\r\n\r\n.main-header .search-bar button {\r\n    padding: 10px 20px;\r\n    background-color: #ff6600;\r\n    color: white;\r\n    border: none;\r\n    border-radius: 5px;\r\n    font-size: 14px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease;\r\n}\r\n\r\n.main-header .search-bar button:hover {\r\n    background-color: #cc5200;\r\n}\r\n\r\n/* Barre des catégories */\r\n.main-header .categories-bar {\r\n    display: flex;\r\n    justify-content: center;\r\n    gap: 20px;\r\n    padding: 10px 0;\r\n    margin-top: 10px;\r\n}\r\n\r\n/* Boutons des catégories */\r\n.main-header .dropdown-btn {\r\n    background: transparent; /* Transparent */\r\n    color: white; /* Texte blanc */\r\n    border: 1px solid white; /* Bordure blanche */\r\n    padding: 10px 20px;\r\n    border-radius: 5px;\r\n    font-size: 14px;\r\n    cursor: pointer;\r\n    transition: background-color 0.3s ease, color 0.3s ease;\r\n}\r\n\r\n.main-header .dropdown-btn:hover {\r\n    background-color: white; /* Fond blanc */\r\n    color: #001c33; /* Texte sombre */\r\n}\r\n\r\n/* Sous-catégories */\r\n.main-header .dropdown-content {\r\n    display: none;\r\n    position: absolute;\r\n    background-color: white;\r\n    color: black;\r\n    min-width: 200px;\r\n    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);\r\n    border-radius: 5px;\r\n    z-index: 1;\r\n    margin-top: 5px;\r\n}\r\n\r\n.main-header .dropdown-content a {\r\n    color: #333;\r\n    padding: 10px 15px;\r\n    text-decoration: none;\r\n    display: block;\r\n    font-size: 14px;\r\n    transition: background-color 0.3s ease;\r\n}\r\n\r\n.main-header .dropdown-content a:hover {\r\n    background-color: #f1f1f1;\r\n    color: #0066cc;\r\n}\r\n\r\n/* Affichage des sous-catégories au survol */\r\n.main-header .dropdown:hover .dropdown-content {\r\n    display: block;\r\n}\r\n\r\n/* Responsiveness */\r\n@media screen and (max-width: 768px) {\r\n    .main-header .header-navigation {\r\n        flex-direction: column;\r\n        gap: 10px;\r\n    }\r\n\r\n    .main-header .categories-bar {\r\n        flex-direction: column;\r\n        gap: 10px;\r\n    }\r\n\r\n    .main-header .search-bar {\r\n        flex-direction: column;\r\n        gap: 10px;\r\n    }\r\n\r\n    .main-header .dropdown-btn {\r\n        width: 100%;\r\n        text-align: center;\r\n    }\r\n\r\n    .main-header .search-bar input[type=\"search\"] {\r\n        width: 100%;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/css/header.css b/View/css/header.css
+--- a/View/css/header.css	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/css/header.css	(date 1738229512044)
+@@ -1,3 +1,6 @@
++/* Importation de la police Montserrat */
++@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap'); /* Importation de la police */
++
+ /* Style général du header */
+ .main-header {
+     background-color: #001c33; /* Couleur sombre */
+@@ -14,8 +17,11 @@
+ }
+ 
+ .main-header .header-top h1 {
+-    color: #ff6600; /* Orange pour le titre */
+-    font-size: 24px;
++    color: #333333; /* Gris foncé pour un look sobre */
++    font-size: 32px; /* Taille plus grande pour une meilleure visibilité */
++    font-family: 'Montserrat', sans-serif; /* Police élégante et professionnelle */
++    font-weight: 600; /* Légèrement plus épais pour plus d'impact */
++    margin: 0;
+ }
+ 
+ /* Navigation principale */
+Index: View/pageContact.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"fr\">\r\n\r\n\r\n<head>\r\n    <link rel=\"stylesheet\" href=\"css/header.css\">\r\n    <link rel=\"stylesheet\" href=\"css/contact.css\">\r\n\r\n</head>\r\n\r\n\r\n\r\n<body>\r\n<?php\r\n\r\ninclude 'header.php';\r\n\r\n?>\r\n<div class=\"contact-container\">\r\n    <h1>Contactez-nous</h1>\r\n    <form method=\"post\" action=\"mail.php\" class=\"contact-form-wrapper\">\r\n        <label for=\"contact-nom\">Nom</label>\r\n        <input type=\"text\" id=\"contact-nom\" name=\"nom\" placeholder=\"Votre nom\" required>\r\n\r\n        <label for=\"contact-prenom\">Prénom</label>\r\n        <input type=\"text\" id=\"contact-prenom\" name=\"prenom\" placeholder=\"Votre prénom\" required>\r\n\r\n        <label for=\"contact-email\">E-mail</label>\r\n        <input type=\"email\" id=\"contact-email\" name=\"email\" placeholder=\"Votre adresse e-mail\" required>\r\n\r\n        <label for=\"contact-telephone\">Téléphone</label>\r\n        <input type=\"tel\" id=\"contact-telephone\" name=\"telephone\" placeholder=\"Votre numéro de téléphone\" required>\r\n\r\n        <label for=\"contact-message\">Message</label>\r\n        <textarea id=\"contact-message\" name=\"message\" rows=\"5\" placeholder=\"Votre message ici...\" required></textarea>\r\n\r\n        <button type=\"submit\">Envoyer</button>\r\n    </form>\r\n</div>\r\n</body>\r\n\r\n<?php\r\ninclude 'footer.php';\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/View/pageContact.php b/View/pageContact.php
+--- a/View/pageContact.php	(revision 5a523360288ea8c423d4e91b7c9628507e36dfaf)
++++ b/View/pageContact.php	(date 1738229512044)
+@@ -15,6 +15,13 @@
+ 
+ include 'header.php';
+ 
++?>
++<?php
++session_start();
++if (isset($_SESSION['error_message'])) {
++    echo "<p style='color: red;'>" . htmlspecialchars($_SESSION['error_message']) . "</p>";
++    unset($_SESSION['error_message']); // Supprime le message après l'affichage
++}
+ ?>
+ <div class="contact-container">
+     <h1>Contactez-nous</h1>

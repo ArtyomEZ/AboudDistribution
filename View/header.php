@@ -5,7 +5,7 @@
 
 
     <div class="header-top">
-        <h1>Aboud Distribution</h1>
+        <h1 a href="pageAccueil.php">Aboud Distribution</h1>
 
     </div>
     <nav class="header-navigation">
@@ -23,7 +23,6 @@
         </a>
     </div>
     <nav class="categories-bar">
-        <!-- Catégorie 1 -->
         <div class="dropdown">
             <button class="dropdown-btn">Moteur et Transmission</button>
             <div class="dropdown-content">
@@ -32,7 +31,6 @@
                 <a href="pageCategorie.php?categorie=embrayage">Embrayages</a>
             </div>
         </div>
-        <!-- Catégorie 2 -->
         <div class="dropdown">
             <button class="dropdown-btn">Éclairage et Électronique</button>
             <div class="dropdown-content">
@@ -41,7 +39,6 @@
                 <a href="pageCategorie.php?categorie=capteurs">Capteurs et Relais</a>
             </div>
         </div>
-        <!-- Catégorie 3 -->
         <div class="dropdown">
             <button class="dropdown-btn">Freins et Suspensions</button>
             <div class="dropdown-content">

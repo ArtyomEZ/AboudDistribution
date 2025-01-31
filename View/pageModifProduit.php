@@ -37,6 +37,7 @@ include 'headerAdmin.php';
     <link rel="stylesheet" href="css/ajout.css">
 </head>
 <body>
+<div class="wrapper">
 <div class="container">
     <h1>Modifier un Produit</h1>
 
@@ -86,6 +87,7 @@ include 'headerAdmin.php';
             <button type="submit" name="modifier">Modifier le Produit</button>
         </form>
     <?php endif; ?>
+</div>
 </div>
 </body>
 </html>

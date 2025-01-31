@@ -1,9 +1,18 @@
 <?php
 
-require_once '../Model/DAO/TypeProduitDAO.php';
+use Model\DAO\ProduitDAO;
+use Model\DAO\TypeProduitDAO;
+
+require_once '../Controller/ProduitController.php';
 require_once '../Model/DAO/ProduitDAO.php';
+require_once '../Model/DAO/TypeProduitDAO.php';
+require_once '../Model/BDDManager.php';
 require_once '../Model/BO/ProduitBO.php';
-require_once '../Model/BO\TypeProduitBO.php';
+require_once '../Model/BO/TypeProduitBO.php';
+
+$bdd = initialiseConnexionBDD();
+$typeProduitDAO = new TypeProduitDAO($bdd);
+$typesProduits = $typeProduitDAO->getAllTypeProduits();
 
 include 'headerAdmin.php';
 ?>
@@ -19,7 +28,7 @@ include 'headerAdmin.php';
 <body>
 <div class="container">
     <h1>Créer un Nouveau Produit</h1>
-    <form method="POST" action="ajoutProduitBDD" class="contact-form">
+    <form method="POST" action="../Controller/ProduitController.php?action=ajoutProduitBDD" class="contact-form">
         <label for="nom_prod">Nom du Produit :</label>
         <input type="text" id="nom_prod" name="nom_prod" required>
 
@@ -43,12 +52,11 @@ include 'headerAdmin.php';
             <?php endforeach; ?>
         </select>
 
-        <button action="ajoutProduitBDD">Créer le Produit</button>
+        <button>Créer le Produit</button>
     </form>
 </div>
 </body>
 </html>
 <?php
-
 include 'footer.php';
 ?>

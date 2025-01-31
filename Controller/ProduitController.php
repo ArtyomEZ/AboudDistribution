@@ -293,6 +293,48 @@ class ProduitController {
             }
         }
     }
+
+    public function pageAjoutProduit() {
+        $typesProduits = $this->typeProduitDAO->getAllTypeProduits();
+
+        include '../View/header.php';
+        include '../View/pageModifProduit.php';
+        include '../View/footer.php';
+    }
+
+    public function ajoutProduitBDD() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nom_prod = $_POST['nom_prod'] ?? '';
+            $desc_prod = $_POST['desc_prod'] ?? '';
+            $marq_prod = $_POST['marq_prod'] ?? '';
+            $prix_prod = isset($_POST['prix_prod']) ? (float) $_POST['prix_prod'] : 0;
+            $img_prod = $_POST['img_prod'] ?? 'pas d\'image';
+            $id_typ_prod = isset($_POST['id_typ_prod']);
+
+            if (!empty($nom_prod) && !empty($desc_prod) && !empty($marq_prod) && $prix_prod > 0 && $id_typ_prod > 0) {
+                try {
+                    $typeProduit = new TypeProduitBO($id_typ_prod, '');
+
+                    $produit = new ProduitBO(0, $nom_prod, $desc_prod, $marq_prod, $prix_prod, $img_prod, $typeProduit);
+
+                    $success = $this->produitDAO->createProduit($produit);
+
+                    if ($success) {
+                        header("Location: ../View/pageAjoutProduit.php?success=1");
+                        exit();
+                    } else {
+                        header("Location: pageAjoutProduit.php?error=1");
+                        exit();
+                    }
+                } catch (Exception $e) {
+                    die("Erreur lors de l'ajout du produit : " . $e->getMessage());
+                }
+            } else {
+                header("Location: pageAjoutProduit.php?error=1");
+                exit();
+            }
+        }
+    }
 }
 
 if (isset($_GET['action'])) {
@@ -302,6 +344,12 @@ if (isset($_GET['action'])) {
         $controller->pageModifProduit();
     } elseif ($_GET['action'] === 'modifProduitBDD') {
         $controller->modifProduitBDD();
+    }
+
+    else if ($_GET['action'] === 'pageAjoutProduit') {
+        $controller->pageAjoutProduit();
+    } else if ($_GET['action'] === 'ajoutProduitBDD') {
+        $controller->ajoutProduitBDD();
     }
 }
 ?>

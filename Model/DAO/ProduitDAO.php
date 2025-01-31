@@ -3,14 +3,15 @@
 namespace Model\DAO;
 
 use Model\BO\ProduitBO;
-use Model\BO\TypeProduitBO; // Import de TypeProduitBO
+use Model\BO\TypeProduitBO;
 use PDO;
+use PDOException;
 
-require_once('../Model/BO/TypeProduitBO.php'); // Inclure TypeProduitBO si nécessaire
+require_once('../Model/BO/TypeProduitBO.php');
 
 class ProduitDAO
 {
-    private $bdd;
+    private PDO $bdd;
 
     public function __construct(PDO $bdd) {
         $this->bdd = $bdd;
@@ -47,18 +48,17 @@ class ProduitDAO
 
     public function createProduit(ProduitBO $produit): bool {
         try {
-            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod, id_typ_prod) 
-                      VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO produit (nom_prod, desc_prod, marq_prod, prix_prod, img_prod, id_typ_prod) 
+                      VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $this->bdd->prepare($query);
 
             $res = $stmt->execute([
-                $produit->getIdProd(),
                 $produit->getNomProd(),
                 $produit->getDescProd(),
-                $produit->getMarProd(),
+                $produit->getMarqProd(),
                 $produit->getPrixProd(),
                 $produit->getImgProd(),
-                $produit->getIdProd() // Récupération de l’ID du TypeProduitBO
+                $produit->getTypProd()->getIdTypProd()
             ]);
 
             return $res;
@@ -67,6 +67,30 @@ class ProduitDAO
             return false;
         }
     }
+
+    public function updateProduit(ProduitBO $produit): bool {
+        try {
+            $query = "UPDATE produit SET nom_prod = ?, desc_prod = ?, marq_prod = ?, prix_prod = ?, img_prod = ?, id_typ_prod = ?
+                  WHERE id_prod = ?";
+
+            $stmt = $this->bdd->prepare($query);
+
+            $res = $stmt->execute([
+                $produit->getNomProd(),
+                $produit->getDescProd(),
+                $produit->getMarqProd(),
+                $produit->getPrixProd(),
+                $produit->getImgProd(),
+                $produit->getTypProd()->getIdTypProd(),
+                $produit->getIdProd(),
+            ]);
+
+            return $res;
+        } catch (PDOException $e) {
+            die("Erreur lors de la mise à jour du produit : " . $e->getMessage());
+        }
+    }
+
 
     public function deleteProduit($id_prod) {
         try {
@@ -77,4 +101,43 @@ class ProduitDAO
             echo "Erreur lors de la suppression du produit : " . $e->getMessage();
         }
     }
+
+    public function getProduitById(int $id_prod): ?ProduitBO {
+        try {
+            $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, p.img_prod, 
+                         t.id_typ_prod, t.lib_typ_prod
+                  FROM produit p
+                  INNER JOIN type_produit t ON p.id_typ_prod = t.id_typ_prod
+                  WHERE p.id_prod = :id_prod";
+
+            $stmt = $this->bdd->prepare($query);
+            $stmt->bindValue(':id_prod', $id_prod, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                // Création de l'objet TypeProduitBO
+                $typeProduit = new TypeProduitBO(
+                    $result['id_typ_prod'],
+                    $result['lib_typ_prod']
+                );
+
+                // Création de l'objet ProduitBO avec les informations récupérées
+                return new ProduitBO(
+                    $result['id_prod'],
+                    $result['nom_prod'],
+                    $result['desc_prod'],
+                    $result['marq_prod'],
+                    $result['prix_prod'],
+                    $result['img_prod'] ?? 'pas d\'image',
+                    $typeProduit
+                );
+            } else {
+                return null; // Aucun produit trouvé
+            }
+        } catch (PDOException $e) {
+            die("Erreur lors de la récupération du produit : " . $e->getMessage());
+        }
+    }
+
 }
