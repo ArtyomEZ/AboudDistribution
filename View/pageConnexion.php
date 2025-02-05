@@ -1,5 +1,30 @@
 
 <?php
+<<<<<<< Updated upstream
+=======
+
+require_once '../Controller/LoginController.php';
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $loginController = new LoginController();
+    $loginSuccess = $loginController->login($_POST['login_uti'], $_POST['mdp_uti']);
+
+    if (!$loginSuccess) {
+        echo "<p style='color: red;'>Échec de la connexion.</p>";
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    echo "Formulaire soumis !<br>";
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+}
+
+>>>>>>> Stashed changes
 include  'header.php';
 ?>
 

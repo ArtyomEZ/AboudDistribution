@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< Updated upstream
 use Model\DAO\AdministrateurDAO;
 
 class LoginController
@@ -7,11 +8,24 @@ class LoginController
     public function login($login, $mdp): void
     {
 
+=======
+use Model\BO\UtilisateurBO;
+
+require_once '../Model/BDDManager.php';
+require_once '../Model/DAO/UtilisateurDAO.php';
+
+class LoginController
+{
+    private UtilisateurDAO $utilisateurDAO;
+
+    public function __construct() {
+>>>>>>> Stashed changes
         $bdd = initialiseConnexionBDD();
         if (!$bdd) {
             $this->redirectWithError("Impossible de se connecter à la base de données.");
         }
 
+<<<<<<< Updated upstream
         $user = null;
         $role = null;
 
@@ -20,11 +34,26 @@ class LoginController
             $user = $administrateurDAO->loginAdmin($login, $mdp);
             if ($user) {
                 $role = "administrateur";
+=======
+    public function login(string $login, string $password): bool {
+        echo "LoginController::login() exécuté !<br>";
+
+        session_start();
+
+        try {
+            echo "🔍 Recherche de l'utilisateur dans la base...<br>";
+            $utilisateur = $this->utilisateurDAO->getUtilisateurByLogin($login);
+
+            if (!$utilisateur) {
+                echo "❌ Aucun utilisateur trouvé avec ce login.<br>";
+                return false;
+>>>>>>> Stashed changes
             }
         } catch (\Exception $e) {
             $this->redirectWithError("Erreur lors de l'authentification : " . $e->getMessage());
         }
 
+<<<<<<< Updated upstream
         if ($user && $role) {
             $this->startSession($user, $role);
         } else {
@@ -71,3 +100,27 @@ class LoginController
         header("Location: ../index.php?error=Requête invalide.");
         exit;
     }
+=======
+            echo "✅ Utilisateur trouvé : " . htmlspecialchars($utilisateur->getLoginUti()) . "<br>";
+
+            // Affichage du mot de passe haché stocké en base pour comparer
+            echo "🔑 Mot de passe stocké (hash) : " . $utilisateur->getMdpUti() . "<br>";
+
+            if (password_verify($password, $utilisateur->getMdpUti())) {
+                echo "✅ Mot de passe correct !<br>";
+                $_SESSION['user_id'] = $utilisateur->getIdUti();
+                $_SESSION['login_uti'] = $utilisateur->getLoginUti();
+                header("Location: ../View/pageProduits.php");
+                exit;
+            } else {
+                echo "❌ Mot de passe incorrect.<br>";
+                return false;
+            }
+        } catch (Exception $e) {
+            echo "❌ Erreur serveur : " . $e->getMessage() . "<br>";
+            return false;
+        }
+    }
+
+}
+>>>>>>> Stashed changes
