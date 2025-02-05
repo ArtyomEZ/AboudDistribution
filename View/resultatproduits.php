@@ -24,14 +24,15 @@ if (isset($_SESSION['resultats']) && !empty($_SESSION['resultats'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Résultats de Recherche - Boutique Automobile</title>
-    <link rel="stylesheet" href="css/produits.css"> <!-- Lien vers le CSS -->
+    <link rel="stylesheet" href="css/produits.css">
+    <link rel="stylesheet" href="css/header.css">
 </head>
 <body>
 
 <?php include('header.php'); ?>
 
 <div class="container1">
-    <h2>Résultats pour : <?= htmlspecialchars($_SESSION['searchTerm'] ?? ''); ?></h2>
+    <h2>Résultats pour : <?= htmlspecialchars($_SESSION['searchTerm'] ?? ''); ?> 1</h2>
 
     <div class="product-grid">
         <?php if (!empty($resultats)): ?>
