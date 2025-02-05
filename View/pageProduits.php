@@ -73,12 +73,27 @@ if (isset($_SESSION['error_message'])) {
                     <!-- Passer l'ID du produit à la page panier via URL -->
                     <a href="?add_to_cart=<?= $produit->getIdProd(); ?>" class="buy-btn">🛒 Ajouter au panier</a>
                 </div>
+<<<<<<< Updated upstream
             </div>
         <?php endforeach; ?>
+
+
+        </div>
+
+
     </div>
 </div>
+
 
 </body>
 </html>
 
 <?php include('footer.php'); ?>
+
+    </body>
+    </html>
+
+    <?php include('footer.php'); ?>
+
+    </body>
+</html>

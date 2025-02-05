@@ -1,126 +1,90 @@
 <?php
 
-<<<<<<< Updated upstream
 use Model\DAO\AdministrateurDAO;
 
-class LoginController
-{
-    public function login($login, $mdp): void
-    {
-
-=======
-use Model\BO\UtilisateurBO;
-
 require_once '../Model/BDDManager.php';
+require_once '../Model/DAO/AdministrateurDAO.php';
 require_once '../Model/DAO/UtilisateurDAO.php';
 
 class LoginController
 {
-    private UtilisateurDAO $utilisateurDAO;
+    private $bdd;
+    private $utilisateurDAO;
+    private $administrateurDAO;
 
     public function __construct() {
->>>>>>> Stashed changes
-        $bdd = initialiseConnexionBDD();
-        if (!$bdd) {
+        $this->bdd = initialiseConnexionBDD();
+        if (!$this->bdd) {
             $this->redirectWithError("Impossible de se connecter à la base de données.");
         }
 
-<<<<<<< Updated upstream
-        $user = null;
-        $role = null;
+        $this->utilisateurDAO = new UtilisateurDAO($this->bdd);
+        $this->administrateurDAO = new AdministrateurDAO($this->bdd);
+    }
 
-        try {
-            $administrateurDAO = new AdministrateurDAO($bdd);
-            $user = $administrateurDAO->loginAdmin($login, $mdp);
-            if ($user) {
-                $role = "administrateur";
-=======
-    public function login(string $login, string $password): bool {
-        echo "LoginController::login() exécuté !<br>";
-
+    public function login(string $login, string $password): void {
         session_start();
 
         try {
-            echo "🔍 Recherche de l'utilisateur dans la base...<br>";
+            // Vérification administrateur
+            $user = $this->administrateurDAO->loginAdmin($login, $password);
+            if ($user) {
+                $this->startSession($user, "administrateur");
+                return;
+            }
+
+            // Vérification utilisateur normal
             $utilisateur = $this->utilisateurDAO->getUtilisateurByLogin($login);
 
             if (!$utilisateur) {
-                echo "❌ Aucun utilisateur trouvé avec ce login.<br>";
-                return false;
->>>>>>> Stashed changes
+                $this->redirectWithError("❌ Aucun utilisateur trouvé avec ce login.");
             }
-        } catch (\Exception $e) {
-            $this->redirectWithError("Erreur lors de l'authentification : " . $e->getMessage());
-        }
 
-<<<<<<< Updated upstream
-        if ($user && $role) {
-            $this->startSession($user, $role);
-        } else {
-            $this->redirectWithError("Identifiants incorrects ou utilisateur introuvable.");
+            // Vérification du mot de passe
+            if (password_verify($password, $utilisateur->getMdpUti())) {
+                $this->startSession($utilisateur, "utilisateur");
+            } else {
+                $this->redirectWithError("❌ Mot de passe incorrect.");
+            }
+        } catch (Exception $e) {
+            $this->redirectWithError("❌ Erreur serveur : " . $e->getMessage());
         }
     }
 
-    private function StartSession($user, $role)
+    private function startSession($user, $role)
     {
-        if(session_status() === PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        $_SESSION['id'] = $user->getAdminId();
-        $_SESSION['login'] = $user->getAdminLogin();
-        $_SESSION['mdp'] = $user->getAdminMdp();
+        $_SESSION['id'] = ($role === "administrateur") ? $user->getAdminId() : $user->getIdUti();
+        $_SESSION['login'] = ($role === "administrateur") ? $user->getAdminLogin() : $user->getLoginUti();
         $_SESSION['role'] = $role;
 
-        header("Location: ../Controller/ProduitController.php?action=dashboard");
+        header("Location: ../View/pageProduits.php");
+        exit;
     }
 
     private function redirectWithError($message)
     {
-        header("Location: ../../index.php?error=" . urlencode($message));
+        header("Location: ../View/pageConnexion.php?error=" . urlencode($message));
         exit;
     }
 }
 
-    if($_SERVER["REQUEST_METHOD"] == "POST") {
-        $login = $_POST["login"];
-        $mdp = $_POST["mdp"];
+// Vérification du formulaire
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $login = $_POST["login"] ?? '';
+    $mdp = $_POST["mdp"] ?? '';
 
-        if(empty($login)) {
-            header("Location: ../index.php?error=Le champ login est obligatoire.");
-        }
-
-        if(empty($mdp)) {
-            header("Location: ../index.php?error=Le champ mdp est obligatoire.");
-        }
-
-        $controller = new LoginController();
-        $controller->login($login, $mdp);
-    } else {
-        header("Location: ../index.php?error=Requête invalide.");
+    if (empty($login) || empty($mdp)) {
+        header("Location: ../View/pageConnexion.php?error=Veuillez remplir tous les champs.");
         exit;
     }
-=======
-            echo "✅ Utilisateur trouvé : " . htmlspecialchars($utilisateur->getLoginUti()) . "<br>";
 
-            // Affichage du mot de passe haché stocké en base pour comparer
-            echo "🔑 Mot de passe stocké (hash) : " . $utilisateur->getMdpUti() . "<br>";
-
-            if (password_verify($password, $utilisateur->getMdpUti())) {
-                echo "✅ Mot de passe correct !<br>";
-                $_SESSION['user_id'] = $utilisateur->getIdUti();
-                $_SESSION['login_uti'] = $utilisateur->getLoginUti();
-                header("Location: ../View/pageProduits.php");
-                exit;
-            } else {
-                echo "❌ Mot de passe incorrect.<br>";
-                return false;
-            }
-        } catch (Exception $e) {
-            echo "❌ Erreur serveur : " . $e->getMessage() . "<br>";
-            return false;
-        }
-    }
-
+    $controller = new LoginController();
+    $controller->login($login, $mdp);
+} else {
+    header("Location: ../View/pageConnexion.php?error=Requête invalide.");
+    exit;
 }
->>>>>>> Stashed changes
