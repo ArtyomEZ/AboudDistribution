@@ -162,3 +162,67 @@
         width: 100%;
     }
 }
+/* Positionnement du champ de recherche et des boutons d'authentification */
+.search-and-auth {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 10px 0;
+}
+
+/* Style des boutons connexion/déconnexion */
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auth-buttons .username {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Style des boutons */
+.login-btn, .logout-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.login-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.login-btn:hover {
+    background-color: #0056b3;
+}
+
+.logout-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.logout-btn:hover {
+    background-color: #a71d2a;
+}
+
+/* Adaptation pour mobiles */
+@media screen and (max-width: 768px) {
+    .search-and-auth {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .auth-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+}

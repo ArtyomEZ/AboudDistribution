@@ -4,12 +4,13 @@ require_once '../Controller/RegisterController.php';
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $registerController = new RegisterController();
     $registerSuccess = $registerController->register($_POST['login_uti'], $_POST['mdp_uti']);
 
     if ($registerSuccess) {
-        echo "<p style='color: green;'>Inscription réussie ! <a href='pageConnexion.php'>Connectez-vous</a></p>";
+        header("Location: pageConnexion.php");
+        exit;
     } else {
         echo "<p style='color: red;'>Échec de l'inscription.</p>";
     }
@@ -34,7 +35,7 @@ include 'header.php';
         <form method="POST">
             <input type="text" name="login_uti" placeholder="Nom d'utilisateur" required>
             <input type="password" name="mdp_uti" placeholder="Mot de passe" required>
-            <button type="submit">S'inscrire</button>
+            <button type="submit" name="submit">S'inscrire</button>
         </form>
         <div class="auth-register-link">
             <p>Déjà un compte ? <a href="pageConnexion.php">Connectez-vous</a></p>

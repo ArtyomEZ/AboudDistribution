@@ -21,7 +21,7 @@ class UtilisateurDAO
                 $hashedPassword]
             );
 
-            return $stmt->execute();
+            return true;
         } catch (Exception $e) {
             echo "Erreur SQL : " . $e->getMessage();
             return false;
