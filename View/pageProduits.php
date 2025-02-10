@@ -19,7 +19,7 @@ try {
     echo "<p>Erreur lors de la connexion à la base de données : " . $e->getMessage() . "</p>";
 }
 
-session_start();
+
 
 if (isset($_GET['add_to_cart'])) {
     // Récupérer l'ID du produit
