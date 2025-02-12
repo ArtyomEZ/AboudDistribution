@@ -3,10 +3,9 @@
 namespace Model\DAO;
 
 use Model\BO\ProduitBO;
+use Model\BO\SousCategorieBO;
 use Model\BO\TypeProduitBO; // Import de TypeProduitBO
 use PDO;
-
-require_once('../Model/BO/TypeProduitBO.php'); // Inclure TypeProduitBO si nécessaire
 
 class ProduitDAO
 {
@@ -20,10 +19,7 @@ class ProduitDAO
         $produits = [];
 
         try {
-            $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
-                         p.img_prod, p.id_typ_prod, t.lib_typ_prod 
-                  FROM produit p
-                  JOIN type_produit t ON p.id_typ_prod = t.id_typ_prod"; // 🔥 Correction ici
+            $query = "SELECT * FROM Produit"; // 🔥 Correction ici
 
             $stmt = $this->bdd->query($query);
 
@@ -35,7 +31,7 @@ class ProduitDAO
                     $row['marq_prod'],
                     $row['prix_prod'],
                     $row['img_prod'] ?? '',
-                    new TypeProduitBO($row['id_typ_prod'], $row['lib_typ_prod']) // 🔥 Correction ici
+                    new SousCategorieBO($row['id_sous_cat'], '', '')
                 );
                 $produits[] = $produit;
             }
@@ -47,7 +43,7 @@ class ProduitDAO
 
     public function createProduit(ProduitBO $produit): bool {
         try {
-            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod, id_typ_prod) 
+            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod, id_sous_cat) 
                       VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->bdd->prepare($query);
 
@@ -58,7 +54,7 @@ class ProduitDAO
                 $produit->getMarProd(),
                 $produit->getPrixProd(),
                 $produit->getImgProd(),
-                $produit->getIdProd() // Récupération de l’ID du TypeProduitBO
+                $produit->getSousCat()->getIdSousCat()
             ]);
 
             return $res;
