@@ -1,6 +1,6 @@
 <?php
-session_start();
-include('header.php');
+
+
 use Model\DAO\ProduitDAO;
 
 require_once('../Model/DAO/ProduitDAO.php');
@@ -15,6 +15,8 @@ try {
 } catch (PDOException $e) {
     echo "<p>Erreur lors de la connexion à la base de données : " . $e->getMessage() . "</p>";
 }
+
+include('header.php');
 ?>
 
     <!DOCTYPE html>

@@ -16,7 +16,6 @@
     </nav>
 </header>
 <?php
-session_start();
 if (isset($_SESSION['error_message'])) {
     echo "<p style='color: red;'>" . htmlspecialchars($_SESSION['error_message']) . "</p>";
     unset($_SESSION['error_message']); // Supprime le message après l'affichage

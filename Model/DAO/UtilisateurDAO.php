@@ -52,5 +52,17 @@ class UtilisateurDAO
             return null;
         }
     }
+    public function editUtilisateur(int $id, string $newLogin, string $newHashedPassword): bool {
+        try {
+            $sql = "UPDATE utilisateur SET login_uti = ?, mdp_uti = ? WHERE id_uti = ?";
+            $stmt = $this->bdd->prepare($sql);
+            $stmt->execute([$newLogin, $newHashedPassword, $id]);
+
+            return true;
+        } catch (Exception $e) {
+            echo "Erreur SQL : " . $e->getMessage();
+            return false;
+        }
+    }
 
 }
