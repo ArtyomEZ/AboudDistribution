@@ -14,14 +14,19 @@ body {
     text-align: center;
 }
 
-/* Liste des produits */
-.product-grid {
+/* Grille des produits */
+.product-container {
     display: flex;
-    flex-wrap: nowrap; /* Effet slider */
-    overflow-x: auto;
+    flex-direction: column;
     gap: 20px;
-    padding-bottom: 10px;
+}
 
+/* Ligne de produits (4 par ligne) */
+.product-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 /* Style des produits */
@@ -31,46 +36,38 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 15px;
     text-align: center;
+    width: calc(25% - 20px); /* Pour 4 produits par ligne, en tenant compte de l'espacement */
     min-width: 250px;
-    flex: 0 0 auto;
     border: 1px solid #ddd;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 400px; /* Taille uniforme des cartes */
+    height: 400px; /* Taille uniforme */
     max-width: 300px;
 }
 
-/* Image produit - Taille uniforme */
+/* Image produit */
 .product-card img {
-    width: 120px; /* Taille fixe pour toutes les images */
+    width: 120px;
     height: 120px;
-    object-fit: contain; /* Évite la déformation */
+    object-fit: contain;
     display: block;
     margin: 0 auto;
     border-radius: 5px;
 }
 
-/* Conteneur du texte */
-.product-info {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-/* Nom du produit - Alignement uniforme */
+/* Nom du produit */
 .product-card h3 {
     font-size: 1rem;
     color: #343a40;
     margin: 10px 0;
-    min-height: 50px; /* Fixe une hauteur pour tous les noms */
+    min-height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Prix - Alignement parfait */
+/* Prix */
 .product-card .product-price {
     font-size: 1.2rem;
     font-weight: bold;
@@ -78,15 +75,19 @@ body {
     margin-bottom: 10px;
 }
 
-/* Conteneur du bouton */
-.product-card .button-container {
-    display: flex;
-    justify-content: center;
+/* Marque */
+.product-brand {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* Bouton */
+.button-container {
     margin-top: auto;
 }
 
-/* Bouton d'achat */
-.product-card .buy-btn {
+.buy-btn {
     background-color: #d32f2f;
     color: white;
     border: none;
@@ -98,27 +99,6 @@ body {
     cursor: pointer;
 }
 
-.product-card .buy-btn:hover {
+.buy-btn:hover {
     background-color: #b71c1c;
-}
-
-/* Styles pour le slider */
-.slider-controls {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.slider-controls button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.slider-controls button:hover {
-    background-color: #0056b3;
 }

@@ -1,6 +1,9 @@
 <?php
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -19,8 +22,8 @@ session_start();
         <a href="pageContact.php">Contact</a>
 
         <?php if (!empty($_SESSION['login'])): ?>
-            <span class="user-name">👤 <?= htmlspecialchars($_SESSION['login']) ?></span>
-            <a href="../Controller/LogoutController.php" class="logout-btn">Se Déconnecter</a>
+        <div class="dropdown">   <a href="pageParam.php"><span class="user-name">👤 <?= htmlspecialchars($_SESSION['login']) ?></span></a>
+            <div class="dropdown-content"><a href="../Controller/LogoutController.php" class="logout-btn">Se Déconnecter</a></div></div>
         <?php else: ?>
             <a href="pageConnexion.php" class="login-btn">Se Connecter</a>
         <?php endif; ?>
@@ -34,10 +37,12 @@ session_start();
 
     <!-- Conteneur regroupant la barre de recherche et les catégories -->
     <div class="search-and-categories">
+        <form action="../Controller/rechercheController.php">
         <!-- Barre de recherche -->
         <div class="search-bar">
-            <input type="search" placeholder="Rechercher une pièce...">
-            <button>Rechercher</button>
+            <input type="search" name="search" placeholder="Rechercher une pièce...">
+            <button >Rechercher</button>
+        </form>
         </div>
 
         <!-- Catégories en dessous -->
@@ -46,47 +51,36 @@ session_start();
             <div class="dropdown">
                 <button class="dropdown-btn">Moteur et Transmission</button>
                 <div class="dropdown-content">
-                    <a href="pageCategorie.php?categorie=bloc-moteur">Bloc Moteur</a>
-                    <a href="pageCategorie.php?categorie=piston">Pistons</a>
-                    <a href="pageCategorie.php?categorie=vilebrequin">Vilebrequin</a>
+
                     <a href="pageCategorie.php?categorie=alternateur">Alternateur</a>
                     <a href="pageCategorie.php?categorie=courroie">Courroie de Distribution</a>
                     <a href="pageCategorie.php?categorie=embrayage">Embrayage</a>
-                    <a href="pageCategorie.php?categorie=transmission">Transmission</a>
+
                 </div>
             </div>
 
             <!-- Suspension, Direction et Freinage -->
             <div class="dropdown">
-                <button class="dropdown-btn">Suspension, Direction et Freinage</button>
+                <button class="dropdown-btn">Suspension, Direction </button>
                 <div class="dropdown-content">
                     <a href="pageCategorie.php?categorie=amortisseur">Amortisseurs</a>
                     <a href="pageCategorie.php?categorie=ressort">Ressorts de Suspension</a>
                     <a href="pageCategorie.php?categorie=rotule">Rotules de Direction</a>
-                    <a href="pageCategorie.php?categorie=barre-stabilisatrice">Barre Stabilisateur</a>
-                    <a href="pageCategorie.php?categorie=direction-assistée">Direction Assistée</a>
+                    <a href="pageCategorie.php?categorie=barre-stabilisatrice">Barre Stabilisatrice</a>
                     <hr>
                     <a href="pageCategorie.php?categorie=disque-frein">Disques de Frein</a>
                     <a href="pageCategorie.php?categorie=plaquette-frein">Plaquettes de Frein</a>
-                    <a href="pageCategorie.php?categorie=etrier-frein">Étriers de Frein</a>
-                    <a href="pageCategorie.php?categorie=maitre-cylindre">Maître-Cylindre</a>
-                    <a href="pageCategorie.php?categorie=flexible-frein">Flexible de Frein</a>
+
                 </div>
             </div>
 
             <!-- Refroidissement et Échappement -->
             <div class="dropdown">
-                <button class="dropdown-btn">Refroidissement et Échappement</button>
+                <button class="dropdown-btn">Refroidissement </button>
                 <div class="dropdown-content">
-                    <a href="pageCategorie.php?categorie=radiateur">Radiateur</a>
                     <a href="pageCategorie.php?categorie=pompe-eau">Pompe à Eau</a>
                     <a href="pageCategorie.php?categorie=thermostat">Thermostat</a>
-                    <a href="pageCategorie.php?categorie=ventilateur">Ventilateur de Refroidissement</a>
-                    <hr>
-                    <a href="pageCategorie.php?categorie=collecteur-echappement">Collecteur d'Échappement</a>
-                    <a href="pageCategorie.php?categorie=silencieux">Silencieux</a>
-                    <a href="pageCategorie.php?categorie=catalyseur">Catalyseur</a>
-                    <a href="pageCategorie.php?categorie=tuyau-echappement">Tuyau d'Échappement</a>
+
                 </div>
             </div>
 
@@ -124,7 +118,11 @@ session_start();
                     <a href="pageCategorie.php?categorie=phares">Phares et Feux</a>
                 </div>
             </div>
+            <div class="dropdown">
+                <button class="dropdown-btn">Lubrifiant</button>
+                <div class="dropdown-content">
 
+                </div>
         </nav>
 </header>
 
