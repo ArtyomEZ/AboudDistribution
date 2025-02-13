@@ -2,6 +2,7 @@
 
 namespace Model\DAO;
 
+use Model\BO\CategorieBO;
 use Model\BO\SousCategorieBO;
 use PDO;
 
@@ -63,9 +64,6 @@ class SousCategorieDAO
 
         $sousCategories = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            // Vérifie ce qui est récupéré depuis la base de données
-            var_dump($row);  // Ajoute cette ligne pour déboguer
-
             $sousCategories[] = new SousCategorieBO(
                 $row['id_sous_cat'],
                 $row['nom_sous_cat'],
@@ -74,6 +72,32 @@ class SousCategorieDAO
         }
 
         return $sousCategories;
+    }
+
+    public function getSousCategorieById(int $id_sous_cat): ?SousCategorieBO
+    {
+        try {
+            // Requête pour récupérer une sous-catégorie par son ID
+            $query = "SELECT * FROM sous_categorie WHERE id_sous_cat = ?";
+            $stmt = $this->bdd->prepare($query);
+            $stmt->execute([$id_sous_cat]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$row) {
+                return null; // Si la sous-catégorie n'est pas trouvée
+            }
+
+            // Création de l'objet SousCategorieBO et renvoi
+            return new SousCategorieBO(
+                $row['id_sous_cat'],
+                $row['nom_sous_cat'],
+                $row['id_cat']
+            );
+
+        } catch (\Exception $e) {
+            echo "Erreur lors de la récupération de la sous-catégorie : " . $e->getMessage();
+            return null;
+        }
     }
 
 

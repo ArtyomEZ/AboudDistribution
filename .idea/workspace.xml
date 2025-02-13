@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="09925423-332a-4298-8e5b-1f709912f47c" name="Changes" comment="Commit header Admin">
+    <list default="true" id="09925423-332a-4298-8e5b-1f709912f47c" name="Changes" comment="Commit produit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controller/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Controller/LoginController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/BO/UtilisateurBO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/BO/UtilisateurBO.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model/DAO/UtilisateurDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/DAO/UtilisateurDAO.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/pageConnexion.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageConnexion.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/pageProduits.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageProduits.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View/resultatproduits.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/resultatproduits.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/BO/CategorieBO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/BO/CategorieBO.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/BO/ProduitBO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/BO/ProduitBO.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/BO/SousCategorieBO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/BO/SousCategorieBO.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/DAO/CategorieDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/DAO/CategorieDAO.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/DAO/ProduitDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/DAO/ProduitDAO.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/DAO/SousCategorieDAO.php" beforeDir="false" afterPath="$PROJECT_DIR$/Model/DAO/SousCategorieDAO.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View/pageCreationProduit.php" beforeDir="false" afterPath="$PROJECT_DIR$/View/pageCreationProduit.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,26 +65,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/wamp64/www/PHP/AboudDistribution",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Zakariyya1&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/wamp64/www/PHP/AboudDistribution&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\wamp64\www\PHP\AboudDistribution\View" />
@@ -116,6 +118,7 @@
       <workItem from="1738250533516" duration="1466000" />
       <workItem from="1738328709005" duration="11212000" />
       <workItem from="1738656476494" duration="57928000" />
+      <workItem from="1739454195512" duration="390000" />
     </task>
     <task id="LOCAL-00001" summary="Premier commit la team nasdas">
       <option name="closed" value="true" />
@@ -229,7 +232,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738079779188</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Commit produit">
+      <option name="closed" value="true" />
+      <created>1739349658325</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1739349658325</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -269,6 +280,8 @@
     <MESSAGE value="Commit GetByIdTypeProd" />
     <MESSAGE value="Commit Pages gestion produits" />
     <MESSAGE value="Commit header Admin" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit header Admin" />
+    <MESSAGE value="Commit Produit et Catégories" />
+    <MESSAGE value="Commit produit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit produit" />
   </component>
 </project>

@@ -3,10 +3,10 @@
 namespace Model\DAO;
 
 use Model\BO\ProduitBO;
-use Model\BO\TypeProduitBO; // Import de TypeProduitBO
+use Model\BO\SousCategorieBO;
+use Model\BO\CategorieBO;
 use PDO;
 
-require_once('../Model/BO/TypeProduitBO.php'); // Inclure TypeProduitBO si nécessaire
 
 class ProduitDAO
 {
@@ -20,10 +20,7 @@ class ProduitDAO
         $produits = [];
 
         try {
-            $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
-                         p.img_prod, p.id_typ_prod, t.lib_typ_prod 
-                  FROM produit p
-                  JOIN type_produit t ON p.id_typ_prod = t.id_typ_prod"; // 🔥 Correction ici
+            $query = "SELECT * FROM Produit";
 
             $stmt = $this->bdd->query($query);
 
@@ -35,7 +32,7 @@ class ProduitDAO
                     $row['marq_prod'],
                     $row['prix_prod'],
                     $row['img_prod'] ?? '',
-                    new TypeProduitBO($row['id_typ_prod'], $row['lib_typ_prod']) // 🔥 Correction ici
+                    new SousCategorieBO($row['id_sous_cat'], '', '')
                 );
                 $produits[] = $produit;
             }
@@ -45,9 +42,67 @@ class ProduitDAO
         return $produits;
     }
 
+    public function getProduitById(int $id_prod): ?ProduitBO
+    {
+        try {
+            // Récupération du produit
+            $query = "SELECT * FROM produit WHERE id_prod = ?";
+            $stmt = $this->bdd->prepare($query);
+            $stmt->execute([$id_prod]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$row) {
+                return null; // Aucun produit trouvé
+            }
+
+            // Récupération de la sous-catégorie
+            $querySousCat = "SELECT * FROM sous_categorie WHERE id_sous_cat = ?";
+            $stmtSousCat = $this->bdd->prepare($querySousCat);
+            $stmtSousCat->execute([$row['id_sous_cat']]);
+            $rowSousCat = $stmtSousCat->fetch(PDO::FETCH_ASSOC);
+
+            if (!$rowSousCat) {
+                return null; // Sous-catégorie introuvable
+            }
+
+            // Récupération de la catégorie
+            $queryCat = "SELECT * FROM categorie WHERE id_cat = ?";
+            $stmtCat = $this->bdd->prepare($queryCat);
+            $stmtCat->execute([$rowSousCat['id_cat']]);
+            $rowCat = $stmtCat->fetch(PDO::FETCH_ASSOC);
+
+            if (!$rowCat) {
+                return null; // Catégorie introuvable
+            }
+
+            // Création de l'objet CategorieBO
+            $categorie = new CategorieBO($rowCat['id_cat'], $rowCat['nom_cat']);
+
+            // Création de l'objet SousCategorieBO
+            $souscat = new SousCategorieBO($rowSousCat['id_sous_cat'], $rowSousCat['nom_sous_cat'], $rowSousCat['id_cat']);
+
+            // Création et retour de l'objet ProduitBO
+            return new ProduitBO(
+                $row['id_prod'],
+                $row['nom_prod'],
+                $row['desc_prod'],
+                $row['marq_prod'],
+                $row['prix_prod'],
+                $row['img_prod'],
+                $souscat
+            );
+
+        } catch (\Exception $e) {
+            echo "Erreur lors de la récupération du produit : " . $e->getMessage();
+            return null;
+        }
+    }
+
+
+
     public function createProduit(ProduitBO $produit): bool {
         try {
-            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod, id_typ_prod) 
+            $query = "INSERT INTO produit (id_prod, nom_prod, desc_prod, marq_prod, prix_prod, img_prod, id_sous_cat) 
                       VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->bdd->prepare($query);
 
@@ -58,7 +113,7 @@ class ProduitDAO
                 $produit->getMarProd(),
                 $produit->getPrixProd(),
                 $produit->getImgProd(),
-                $produit->getIdProd() // Récupération de l’ID du TypeProduitBO
+                $produit->getSouscat()->getIdSouscat()
             ]);
 
             return $res;
@@ -68,13 +123,35 @@ class ProduitDAO
         }
     }
 
+    public function updateProduit(ProduitBO $produit): bool {
+        try {
+            $query = "UPDATE produit 
+                  SET nom_prod = ?, desc_prod = ?, marq_prod = ?, prix_prod = ?, img_prod = ?, id_sous_cat = ? 
+                  WHERE id_prod = ?";
+            $stmt = $this->bdd->prepare($query);
+
+            $res = $stmt->execute([
+                $produit->getNomProd(),
+                $produit->getDescProd(),
+                $produit->getMarProd(),
+                $produit->getPrixProd(),
+                $produit->getImgProd(),
+                $produit->getSouscat()->getIdSousCat(),
+                $produit->getIdProd()
+            ]);
+
+            return $res;
+        } catch (\Exception $e) {
+            echo "Erreur lors de la mise à jour du produit : " . $e->getMessage();
+            return false;
+        }
+    }
+
     public function searchProduits(string $searchTerm): array {
         $produits = [];
 
         try {
-            $query = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.marq_prod, p.prix_prod, 
-                         p.img_prod, p.id_typ_prod, t.lib_typ_prod 
-                  FROM produit p
+            $query = "SELECT * FROM produit
                   JOIN type_produit t ON p.id_typ_prod = t.id_typ_prod
                   WHERE p.nom_prod LIKE :searchTerm";
 
@@ -89,7 +166,7 @@ class ProduitDAO
                     $row['marq_prod'],
                     $row['prix_prod'],
                     $row['img_prod'] ?? '',
-                    new TypeProduitBO($row['id_typ_prod'], $row['lib_typ_prod'])
+                    new SousCategorieBO($row['id_sous_cat'], '')
                 );
                 $produits[] = $produit;
             }
@@ -99,10 +176,6 @@ class ProduitDAO
 
         return $produits;
     }
-
-
-
-
 
     public function deleteProduit($id_prod) {
         try {

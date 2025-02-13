@@ -20,6 +20,7 @@ $bdd = initialiseConnexionBDD();
 $categorieDAO = new CategorieDAO($bdd);
 $souscategorieDAO = new SousCategorieDAO($bdd);
 $produitDAO = new ProduitDAO($bdd);
+$message = '';
 
 // Récupérer toutes les catégories
 $categoriesProduit = $categorieDAO->getAllCategories();
@@ -32,7 +33,6 @@ $souscategories = [];
 if (!empty($id_cat_selectionnee)) {
     // Test de récupération des sous-catégories avec var_dump pour déboguer
     $souscategories = $souscategorieDAO->getSousCategoriesByCategorieId($id_cat_selectionnee);
-    var_dump($souscategories);  // Debugging ici
 }
 
 // Traitement du formulaire d'ajout de produit
@@ -49,12 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_produit'])) {
         $produit = new ProduitBO(0, $nom_prod, $desc_prod, $marq_prod, $prix_prod, $img_prod, $souscatProduit);
 
         if ($produitDAO->createProduit($produit)) {
-            echo "<p style='color:green;'>Produit créé avec succès !</p>";
+            $message = "<p style='color:green;'>Produit créé avec succès !</p>";
         } else {
-            echo "<p style='color:red;'>Erreur lors de la création du produit.</p>";
+            $message = "<p style='color:red;'>Erreur lors de la création du produit.</p>";
         }
     } else {
-        echo "<p style='color:red;'>Veuillez remplir tous les champs correctement.</p>";
+        $message = "<p style='color:red;'>Veuillez remplir tous les champs correctement.</p>";
     }
 }
 
@@ -73,21 +73,6 @@ include 'headerAdmin.php';
 <div class="container">
     <h1>Créer un Nouveau Produit</h1>
     <form method="POST" class="contact-form">
-        <label for="nom_prod">Nom du Produit :</label>
-        <input type="text" id="nom_prod" name="nom_prod" required>
-
-        <label for="desc_prod">Description :</label>
-        <textarea id="desc_prod" name="desc_prod" required></textarea>
-
-        <label for="marq_prod">Marque :</label>
-        <input type="text" id="marq_prod" name="marq_prod" required>
-
-        <label for="prix_prod">Prix :</label>
-        <input type="number" id="prix_prod" name="prix_prod" min="0" required>
-
-        <label for="img_prod">Image (URL) :</label>
-        <input type="text" id="img_prod" name="img_prod">
-
         <label for="id_cat">Catégorie :</label>
         <select id="id_cat" name="id_cat" required onchange="this.form.submit()">
             <option value="">-- Sélectionnez une catégorie --</option>
@@ -112,7 +97,23 @@ include 'headerAdmin.php';
             <?php endif; ?>
         </select>
 
+        <label for="nom_prod">Nom du Produit :</label>
+        <input type="text" id="nom_prod" name="nom_prod" required>
+
+        <label for="desc_prod">Description :</label>
+        <textarea id="desc_prod" name="desc_prod" required></textarea>
+
+        <label for="marq_prod">Marque :</label>
+        <input type="text" id="marq_prod" name="marq_prod" required>
+
+        <label for="prix_prod">Prix :</label>
+        <input type="number" id="prix_prod" name="prix_prod" min="0" required>
+
+        <label for="img_prod">Image (URL) :</label>
+        <input type="text" id="img_prod" name="img_prod">
+
         <button type="submit" name="submit_produit">Créer le Produit</button>
+        <?php echo $message; ?>
     </form>
 </div>
 </body>
