@@ -2,7 +2,7 @@
 
 namespace Model\DAO;
 
-use CategorieBO;
+use Model\BO\CategorieBO;
 use Model\BO\ProduitBO;
 use Model\BO\SousCategorieBO;
 use PDO;
