@@ -14,28 +14,23 @@ private $bdd;
         }
         $this->bdd = $bdd;
     }
-
-    // Nouvelle méthode pour récupérer les pièces d'une sous-catégorie
-
-
-
-    public function getInfosByCategorie(string $sousCategorie): array {
+    public function getInfosByCategorie(string $categorie): array {
         try {
             $sql = "SELECT p.* FROM Produit p
                 JOIN sous_categorie sc ON p.id_sous_cat = sc.id_sous_cat
-                WHERE sc.nom_sous_cat = ?"; // Filtrer par sous-catégorie
+                JOIN categorie c ON sc.id_cat = c.id_cat
+                WHERE c.nom_cat = ?";
 
             $stmt = $this->bdd->prepare($sql);
-            $stmt->execute([$sousCategorie]);
+            $stmt->execute([$categorie]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             return $result ?: []; // Retourne un tableau vide si aucun résultat
         } catch (Exception $e) {
-            error_log("Erreur SQL : " . $e->getMessage());
+            echo "Erreur SQL : " . $e->getMessage();
             return [];
         }
     }
-
 
 
 }

@@ -2,27 +2,23 @@
 
 namespace Model\BO;
 
-use CategorieBO;
-
 class SousCategorieBO
 {
-    private int $id_sous_cat;
-    private string $nom_sous_cat;
-    private \CategorieBO $categorie; // Un objet CategorieBO associé
+    public int $id_sous_cat;
+    public String  $nom_sous_cat;
+    public int $id_categorie;
 
     /**
      * @param int $id_sous_cat
-     * @param string $nom_sous_cat
-     * @param CategorieBO $categorie
+     * @param String $nom_sous_cat
+     * @param int $id_categorie
      */
-    public function __construct(int $id_sous_cat, string $nom_sous_cat, CategorieBO $categorie)
+    public function __construct(int $id_sous_cat, string $nom_sous_cat, int $id_categorie)
     {
         $this->id_sous_cat = $id_sous_cat;
         $this->nom_sous_cat = $nom_sous_cat;
-        $this->categorie = $categorie; // On associe la catégorie à la sous-catégorie
+        $this->id_categorie = $id_categorie;
     }
-
-    // Getters et Setters
 
     public function getIdSousCat(): int
     {
@@ -44,15 +40,14 @@ class SousCategorieBO
         $this->nom_sous_cat = $nom_sous_cat;
     }
 
-    // Getter et Setter pour l'objet CategorieBO
-    public function getCategorie(): CategorieBO
+    public function getIdCategorie(): int
     {
-        return $this->categorie;
+        return $this->id_categorie;
     }
 
-    public function setCategorie(CategorieBO $categorie): void
+    public function setIdCategorie(int $id_categorie): void
     {
-        $this->categorie = $categorie;
+        $this->id_categorie = $id_categorie;
     }
+
 }
-?>

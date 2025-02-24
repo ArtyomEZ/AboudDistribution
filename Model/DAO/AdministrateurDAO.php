@@ -19,12 +19,15 @@ class AdministrateurDAO
         try {
             $query = "INSERT INTO Administrateur (login_admin, mdp_admin) VALUES (?, ?)";
             $stmt = $this->bdd->prepare($query);
-            return $stmt->execute([
+
+            $result = $stmt->execute([
                 $administrateur->getLoginAdmin(),
                 $administrateur->getMdpAdmin()
             ]);
+
+            return $result;
         } catch (\Exception $e) {
-            error_log("Erreur création administrateur : " . $e->getMessage());
+            echo "Erreur lors de la création de l'administrateur : " . $e->getMessage();
             return false;
         }
     }
@@ -34,13 +37,16 @@ class AdministrateurDAO
         try {
             $query = "UPDATE Administrateur SET login_admin = ?, mdp_admin = ? WHERE id_admin = ?";
             $stmt = $this->bdd->prepare($query);
-            return $stmt->execute([
+
+            $result = $stmt->execute([
+                $administrateur->getIdAdmin(),
                 $administrateur->getLoginAdmin(),
-                $administrateur->getMdpAdmin(),
-                $administrateur->getIdAdmin() // Correct order
+                $administrateur->getMdpAdmin()
             ]);
+
+            return $result;
         } catch (\Exception $e) {
-            error_log("Erreur mise à jour administrateur : " . $e->getMessage());
+            echo "Erreur lors de la mise à jour de l'administrateur : " . $e->getMessage();
             return false;
         }
     }
@@ -50,9 +56,14 @@ class AdministrateurDAO
         try {
             $query = "DELETE FROM Administrateur WHERE id_admin = ?";
             $stmt = $this->bdd->prepare($query);
-            return $stmt->execute([$administrateur->getIdAdmin()]);
+
+            $result = $stmt->execute([
+                $administrateur->getIdAdmin()
+            ]);
+
+            return $result;
         } catch (\Exception $e) {
-            error_log("Erreur suppression administrateur : " . $e->getMessage());
+            echo "Erreur lors de la suppression de l'administrateur : " . $e->getMessage();
             return false;
         }
     }
@@ -66,20 +77,19 @@ class AdministrateurDAO
 
             $adminData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$adminData || !isset($adminData['mdp_admin'])) {
-                return null; // Admin non trouvé
-            }
-
-            if (password_verify($password, $adminData['mdp_admin'])) {
+            if ($adminData && password_verify($password, $adminData['mot_de_passe'])) {
+                // Création de l'objet AdministrateurBO avec les données récupérées
                 $admin = new AdministrateurBO();
                 $admin->setIdAdmin($adminData['id_admin']);
-                $admin->setLoginAdmin($adminData['login_admin']);
-                return $admin;
+
+                $admin->setLoginAdmin($adminData['login_admin']); // Assure-toi que le setter existe
+
+                return $admin; // Retourne l'objet administrateur connecté
             } else {
-                return null; // Mauvais mot de passe
+                return null; // Identifiants incorrects
             }
         } catch (\Exception $e) {
-            error_log("Erreur lors de la connexion admin : " . $e->getMessage());
+            echo "Erreur lors de la connexion : " . $e->getMessage();
             return null;
         }
     }
