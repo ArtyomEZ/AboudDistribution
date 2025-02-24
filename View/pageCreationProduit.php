@@ -97,8 +97,9 @@ include 'headerAdmin.php';
     </form>
 </div>
 </body>
+<footer>
+    <?php
+    include ('footer.php');
+    ?>
+</footer>
 </html>
-<?php
-
-include 'footer.php';
-?>

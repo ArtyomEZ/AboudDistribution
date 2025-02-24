@@ -68,7 +68,7 @@ class LoginController
 
     private function redirectWithError($message)
     {
-        header("Location: ../index.php?error=" . urlencode($message));
+        header("Location: ../View/pageProduits.php?error=" . urlencode($message));
         exit;
     }
 }

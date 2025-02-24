@@ -1,12 +1,58 @@
 <?php
-
-
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-
+use Model\DAO\PanierDAO;
 use Model\DAO\ProduitDAO;
+use Model\BO\PanierBO;
+use Model\BO\UtilisateurBO;
+use Model\BO\ProduitBO;
+require_once('../Model/DAO/ProduitDAO.php');
+require_once('../Model/DAO/PanierDAO.php');
+require_once('../Model/BO/ProduitBO.php');
+require_once('../Model/BO/UtilisateurBO.php');
+require_once('../Model/BO/PanierBO.php');
+require_once('../Model/BDDManager.php');
+
+if (isset($_GET['add_to_cart'])) {
+    // Vérifiez si l'utilisateur est connecté
+    if (isset($_SESSION['id'])) {
+        // Récupérer l'ID du produit et de l'utilisateur
+        $product_id = $_GET['add_to_cart'];
+        $user_id = $_SESSION['id'];
+
+        // Récupérer les informations du produit
+        try {
+            $a = initialiseConnexionBDD();
+            $produitsDAO = new ProduitDAO($a);
+            $produit = $produitsDAO->getProduitById($product_id);
+
+            if ($produit) {
+                // Créer une instance de PanierDAO
+                $panierDAO = new PanierDAO($a);
+                $login = $_SESSION['login'];
+                $mdp = 'null';
+                $adr = null;
+
+                // Vérifier si le produit est déjà dans le panier de l'utilisateur
+                $panier = new PanierBO(new UtilisateurBO($user_id,$login,$mdp,$adr), $produit, 1,0);
+                $panierDAO->ajouterAuPanier($panier); // Ajouter ou mettre à jour le produit dans le panier
+
+                // Rediriger vers la page panier
+                header("Location: panier.php");
+                exit(); // Assurez-vous de sortir après la redirection
+            } else {
+                echo "Produit non trouvé.";
+            }
+        } catch (Exception $e) {
+            echo "Erreur lors de l'ajout au panier : " . $e->getMessage();
+        }
+    } else {
+        echo "Vous devez être connecté pour ajouter un produit au panier.";
+    }
+}
+
 
 require_once('../Model/DAO/ProduitDAO.php');
 require_once('../Model/BO/ProduitBO.php');
@@ -25,29 +71,13 @@ try {
     echo "<p>Erreur lors de la connexion à la base de données : " . $e->getMessage() . "</p>";
 }
 
+$isAdmin = isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
 
-
-if (isset($_GET['add_to_cart'])) {
-    // Récupérer l'ID du produit
-    $product_id = $_GET['add_to_cart'];
-
-    // Ajouter le produit au panier (dans la session)
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = [];
-    }
-
-    // Vérifier si le produit existe déjà dans le panier, si oui on incrémente la quantité
-    if (isset($_SESSION['cart'][$product_id])) {
-        $_SESSION['cart'][$product_id]['quantity'] += 1;
-    } else {
-        $_SESSION['cart'][$product_id] = ['quantity' => 1];
-    }
-
-
-   header("Location: panier.php");
+if ($isAdmin) {
+    include('headerAdmin.php');
+} else {
+    include('header.php');
 }
-
-include("../View/header.php");
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -72,7 +102,7 @@ include("../View/header.php");
                 <p class="product-brand"><?= htmlspecialchars($produit->getMarqProd()); ?></p>
                 <p class="product-price"><?= number_format($produit->getPrixProd(), 2, ',', ' '); ?> €</p>
                 <div class="button-container">
-                    <a href="?add_to_cart=<?= $produit->getIdProd(); ?>" class="buy-btn">🛒 Ajouter au panier</a>
+                    <a href="produit_detail.php?id=<?= $produit->getIdProd(); ?>" class="buy-btn">🔍 Voir le produit</a>
                 </div>
             </div>
             <?php
@@ -86,5 +116,9 @@ include("../View/header.php");
     </div>
 </div>
 </body>
+<footer>
+    <?php
+    include ('footer.php');
+    ?>
+</footer>
 </html>
-
