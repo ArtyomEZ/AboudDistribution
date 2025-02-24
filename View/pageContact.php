@@ -48,8 +48,6 @@ if (isset($_SESSION['error_message'])) {
 </div>
 </body>
 
-<footer>
-    <?php
-    include ('footer.php');
-    ?>
-</footer>
+<?php
+include 'footer.php';
+

@@ -58,7 +58,7 @@ if (isset($_SESSION['error_message'])) {
     </section>
 </main>
 
-
+<?php include 'footer.php'; ?>
 
 <script>
 
@@ -90,9 +90,4 @@ if (isset($_SESSION['error_message'])) {
     });
 </script>
 </body>
-<footer>
-    <?php
-    include ('footer.php');
-    ?>
-</footer>
 </html>

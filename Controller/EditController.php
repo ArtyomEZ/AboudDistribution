@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$utilisateur) {
         $_SESSION['error'] = "Utilisateur introuvable.";
-        header("Location: ../View/pageParam.php");
+        header("Location: ../View/parametre.php");
         exit;
     }
 
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Vérifier si le nouveau login existe déjà
         if ($utilisateurDAO->getUtilisateurByLogin($nouveauLogin)) {
             $_SESSION['error'] = "Ce login est déjà pris.";
-            header("Location: ../View/pageParam.php");
+            header("Location: ../View/parametre.php");
             exit;
         }
     }

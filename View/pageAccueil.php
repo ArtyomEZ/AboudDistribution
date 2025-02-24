@@ -26,11 +26,8 @@ if (isset($_SESSION['error_message'])) {
 </div>
 
 
-
+<?php
+include ('footer.php');
+?>
 </body>
-<footer>
-    <?php
-    include ('footer.php');
-    ?>
-</footer>
 </html>
