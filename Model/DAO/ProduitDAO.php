@@ -17,6 +17,40 @@ class ProduitDAO
     public function __construct(PDO $bdd) {
         $this->bdd = $bdd;
     }
+    public function getInfosByCategorie(string $sousCategorie): array {
+        try {
+            $sql = "SELECT p.id_prod, p.nom_prod, p.desc_prod, p.prix_prod, p.marq_prod, p.img_prod, p.id_sous_cat
+                FROM Produit p
+                JOIN sous_categorie sc ON p.id_sous_cat = sc.id_sous_cat
+                WHERE sc.nom_sous_cat = ?";
+
+            $stmt = $this->bdd->prepare($sql);
+            $stmt->execute([$sousCategorie]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $produits = [];
+            foreach ($result as $row) {
+                $produit = new \Model\BO\ProduitBO(
+                    $row['id_prod'],
+                    $row['nom_prod'],
+                    $row['desc_prod'],
+                    $row['marq_prod'],
+                    $row['prix_prod'],
+                    $row['img_prod'],
+                    $row['id_sous_cat'] ?? 0 // Ajout d'une valeur par défaut
+                );
+
+                $produits[] = $produit;
+            }
+
+            return $produits;
+        } catch (Exception $e) {
+            error_log("Erreur SQL : " . $e->getMessage());
+            return [];
+        }
+    }
+
+
 
     public function getAllProduits(): array {
         $produits = [];
